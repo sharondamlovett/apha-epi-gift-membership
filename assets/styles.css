@@ -1,4 +1,3 @@
-
 /* ==========================================================
    APHA GIFT MEMBERSHIP DATABASE
    ========================================================== */
@@ -7,23 +6,20 @@
   --ink: #000000;
   --muted: #777777;
   --line: #e5e9ed;
-  --pale: #f5f7f9;
+  --pale: #f3f5f7;
   --blue: #2875b8;
+  --blue-hover: #1f639e;
   --red: #b92736;
-  --green: #347449;
-  --card-shadow: 0 3pt 12pt rgba(0, 0, 0, 0.07);
+  --green: #398451;
+  --white: #ffffff;
 }
 
 * {
   box-sizing: border-box;
 }
 
-[hidden] {
-  display: none !important;
-}
-
 html {
-  scroll-behavior: smooth;
+  min-height: 100%;
 }
 
 body {
@@ -35,13 +31,36 @@ body {
   line-height: 1.45;
 }
 
-.page {
-  width: 100%;
-  max-width: 1400pt;
-  margin: 0 auto;
-  padding: 24pt 28pt 0;
+button,
+input {
+  font: inherit;
 }
 
+button {
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================
+   PAGE LAYOUT
+   ========================================================== */
+
+.page {
+  width: 100%;
+  max-width: 1800px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 22px 28px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
 
 /* ==========================================================
    HEADER
@@ -49,100 +68,82 @@ body {
 
 .topbar {
   display: grid;
-  grid-template-columns: 155pt minmax(0, 1fr) 180pt;
+  grid-template-columns: 170px minmax(0, 1fr) 245px;
+  gap: 22px;
   align-items: start;
-  gap: 22pt;
-  padding: 8pt 0 22pt;
-  border-bottom: 1pt solid var(--line);
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
 }
 
 .brand {
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
-  min-width: 0;
-  padding-top: 5pt;
+  justify-content: center;
+  padding-top: 5px;
 }
 
 .brand-logo {
   display: block;
-  width: 150pt;
+  width: 150px;
   max-width: 100%;
   height: auto;
-  object-fit: contain;
-}
-
-.intro {
-  min-width: 0;
 }
 
 .intro h1 {
-  margin: 0 0 8pt;
+  margin: 0 0 10px;
   color: #000000;
   font-size: 20pt;
-  font-weight: 700;
   line-height: 1.2;
+  font-weight: 700;
 }
 
 .intro p {
-  margin: 0 0 8pt;
-  color: #333333;
+  margin: 0 0 9px;
+  color: #000000;
   font-size: 11pt;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .intro .season-note {
-  margin-top: 10pt;
-  color: var(--red);
-  font-size: 11pt;
+  margin-top: 8px;
   font-weight: 700;
-  font-style: italic;
 }
 
 .header-actions {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 9pt;
-  min-width: 0;
+  gap: 11px;
 }
 
 .admin-note {
   display: block;
-  margin-bottom: 3pt;
-  color: #666666;
-  font-size: 9pt;
-  line-height: 1.4;
+  margin-bottom: 3px;
+  color: #000000;
+  font-size: 10pt;
+  line-height: 1.45;
   text-align: center;
 }
 
-
 /* ==========================================================
-   HEADER BUTTONS
+   BUTTONS
    ========================================================== */
 
 .button {
   display: block;
   width: 100%;
-  padding: 9pt 11pt;
-  border: 1pt solid transparent;
-  border-radius: 6pt;
-  font-size: 10pt;
-  font-weight: 700;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 10.5pt;
   line-height: 1.35;
+  font-weight: 700;
   text-align: center;
   text-decoration: none;
   transition:
-    background 0.2s ease,
-    transform 0.2s ease;
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
-
-.button:hover {
-  transform: translateY(-1pt);
-}
-
-/* APHA Gift Membership Program:
-   Solid blue background and white text in every link state. */
 
 .button-blue,
 .button-blue:link,
@@ -159,295 +160,217 @@ body {
   color: #ffffff !important;
 }
 
-/* Database Intake Form */
-
 .button-red,
 .button-red:link,
 .button-red:visited,
 .button-red:active {
-  border-color: #b92736;
-  background-color: #b92736;
+  border-color: var(--red);
+  background-color: var(--red);
   color: #ffffff !important;
 }
 
 .button-red:hover {
-  border-color: #98202d;
-  background-color: #98202d;
+  border-color: #991f2c;
+  background-color: #991f2c;
   color: #ffffff !important;
 }
 
-
 /* ==========================================================
-   DIRECTORY AND SEARCH
+   DIRECTORY
    ========================================================== */
 
 .directory {
-  padding: 22pt 0 30pt;
+  padding-top: 20px;
 }
 
 .controls {
-  margin-bottom: 14pt;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
 }
 
 .search-box {
-  display: flex;
-  align-items: center;
-  gap: 9pt;
+  position: relative;
   width: 100%;
-  min-height: 38pt;
-  padding: 5pt 10pt;
-  border: 1pt solid #dfe4e8;
-  border-radius: 7pt;
-  background: #ffffff;
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
-.search-box:focus-within {
+.search-box input {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 42px 9px 38px;
+  border: 1px solid #cfd6dd;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 11pt;
+  outline: none;
+}
+
+.search-box input:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 2pt rgba(40, 117, 184, 0.10);
+  box-shadow: 0 0 0 2px rgba(40, 117, 184, 0.13);
+}
+
+.search-box input::placeholder {
+  color: #777777;
+  opacity: 1;
 }
 
 .search-icon {
-  color: #777777;
+  position: absolute;
+  top: 50%;
+  left: 13px;
+  z-index: 1;
+  transform: translateY(-52%);
+  color: #666666;
+  font-size: 20pt;
+  line-height: 1;
+  pointer-events: none;
+}
+
+#clear-search {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #666666;
   font-size: 19pt;
   line-height: 1;
 }
 
-.search-box input {
-  flex: 1;
-  min-width: 0;
-  padding: 5pt 0;
-  border: 0;
-  outline: none;
-  background: transparent;
-  color: #222222;
-  font-family: inherit;
-  font-size: 11pt;
-}
-
-.search-box input::placeholder {
-  color: #999999;
-}
-
-#clear-search {
-  padding: 2pt 6pt;
-  border: 0;
-  background: transparent;
-  color: #777777;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 17pt;
-  line-height: 1;
-}
-
 #clear-search:hover {
-  color: var(--red);
+  background: var(--pale);
+  color: #000000;
 }
-
 
 /* ==========================================================
    FILTER PANEL
    ========================================================== */
 
 .filter-panel {
-  margin-bottom: 14pt;
-  padding: 15pt;
-  border: 1pt solid var(--line);
-  border-radius: 8pt;
-  background: #fafbfc;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 18px 35px;
+  padding: 13px 16px 15px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #f3f5f7;
 }
 
 .filter-panel-heading {
   display: flex;
-  justify-content: space-between;
+  flex-basis: 100%;
   align-items: center;
-  gap: 12pt;
-  margin-bottom: 13pt;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #dfe4e8;
 }
 
 .filter-panel-heading h2 {
   margin: 0;
-  color: #333333;
+  color: #000000;
   font-size: 12pt;
   font-weight: 700;
 }
 
 .clear-filters {
-  padding: 0;
+  padding: 4px 0;
   border: 0;
   background: transparent;
-  color: #888888;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 9pt;
-  font-weight: 700;
-}
-
-.clear-filters:hover {
-  color: var(--red);
+  color: var(--blue);
+  font-size: 10pt;
   text-decoration: underline;
 }
 
-
-/* ==========================================================
-   INDIVIDUAL FILTER GROUPS
-   ========================================================== */
+.clear-filters:hover {
+  color: var(--blue-hover);
+}
 
 .filter-group {
-  padding: 11pt 0;
-  border-top: 1pt solid #e7eaed;
+  min-width: 160px;
 }
 
 .filter-group h3 {
-  margin: 0 0 9pt;
-  color: #555555;
-  font-size: 10pt;
+  margin: 0 0 7px;
+  color: #000000;
+  font-size: 11pt;
   font-weight: 700;
 }
 
 .filter-options {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 7pt;
+  gap: 7px 17px;
 }
-
-
-/* ==========================================================
-   APHA SECTION FILTER TOGGLE
-   ========================================================== */
-
-.section-filter-group {
-  padding-bottom: 4pt;
-}
-
-.section-toggle {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 2pt 0;
-  border: 0;
-  background: transparent;
-  color: #555555;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 10pt;
-  font-weight: 700;
-  text-align: left;
-}
-
-.section-toggle:hover {
-  color: var(--blue);
-}
-
-.section-toggle:focus-visible {
-  outline: 2pt solid var(--blue);
-  outline-offset: 3pt;
-  border-radius: 3pt;
-}
-
-#section-toggle-icon {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 18pt;
-  height: 18pt;
-  border: 1pt solid #d8dfe5;
-  border-radius: 50%;
-  background: #ffffff;
-  color: var(--blue);
-  font-size: 13pt;
-  line-height: 1;
-}
-
-
-/* ==========================================================
-   APHA SECTION FILTER LIST
-   Hidden by default; displayed when expanded.
-   ========================================================== */
-
-.section-list {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
-  gap: 7pt 12pt;
-  margin-top: 11pt;
-}
-
-.section-list[hidden] {
-  display: none !important;
-}
-
-
-/* ==========================================================
-   FILTER CHECKBOXES
-   ========================================================== */
 
 .filter-option {
-  display: flex;
-  align-items: flex-start;
-  gap: 6pt;
-  min-width: 0;
-  padding: 6pt 7pt;
-  border: 1pt solid #e7eaed;
-  border-radius: 5pt;
-  background: #ffffff;
-  color: #444444;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #000000;
+  font-size: 10.5pt;
   cursor: pointer;
-  font-size: 9pt;
-  line-height: 1.35;
-}
-
-.filter-option:hover {
-  border-color: var(--blue);
-  background: #f8fbfd;
 }
 
 .filter-option input {
-  flex: 0 0 auto;
-  margin: 2pt 0 0;
+  width: 14px;
+  height: 14px;
+  margin: 0;
   accent-color: var(--blue);
+  cursor: pointer;
 }
-
-.filter-option span:last-child {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.filter-swatch {
-  display: inline-block;
-  flex: 0 0 auto;
-  width: 8pt;
-  height: 8pt;
-  margin-top: 3pt;
-  border-radius: 50%;
-}
-
 
 /* ==========================================================
-   RESULTS COUNT
+   RESULTS COUNT AND MESSAGES
    ========================================================== */
 
 .directory-meta {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin: 16pt 0 10pt;
-  color: #777777;
-  font-size: 9pt;
-}
-
-.status-message {
-  margin: 10pt 0;
-  color: #777777;
+  justify-content: flex-end;
+  margin: 13px 0 10px;
+  color: #555555;
   font-size: 10pt;
 }
 
+#result-count {
+  font-weight: 700;
+}
+
+.status-message {
+  margin: 12px 0;
+  color: #666666;
+  font-size: 10.5pt;
+}
+
+.empty-state {
+  padding: 35px 15px;
+  border: 1px dashed #cfd6dd;
+  border-radius: 7px;
+  color: #555555;
+  text-align: center;
+}
+
+.empty-state h2 {
+  margin: 0 0 7px;
+  color: #000000;
+  font-size: 14pt;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 11pt;
+}
 
 /* ==========================================================
    PROFILE GRID
@@ -456,10 +379,9 @@ body {
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12pt;
+  gap: 15px;
   align-items: stretch;
 }
-
 
 /* ==========================================================
    PROFILE CARDS
@@ -469,142 +391,88 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: 155pt;
-  padding: 12pt;
-  border: 1pt solid #e7eaed;
-  border-left: 5pt solid var(--blue);
-  border-radius: 9pt;
+  min-height: 190px;
+  padding: 13px 13px 12px;
+  border: 1px solid #e5e9ed;
+  border-left: 5px solid var(--blue);
+  border-radius: 8px;
   background: #ffffff;
-  box-shadow: var(--card-shadow);
-  transition:
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-.profile-card:hover {
-  transform: translateY(-2pt);
-  box-shadow: 0 5pt 16pt rgba(0, 0, 0, 0.11);
-}
-
-.profile-name {
-  margin: 0 0 8pt;
-  color: #222222;
-  font-size: 11.5pt;
-  font-weight: 700;
-  line-height: 1.3;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.07);
   overflow-wrap: anywhere;
 }
 
-
-/* ==========================================================
-   CAREER STAGE, EMAIL AND BIO
-   ========================================================== */
+.profile-name {
+  margin: 0 0 5px;
+  color: #000000;
+  font-size: 12pt;
+  line-height: 1.3;
+  font-weight: 700;
+}
 
 .career-stage {
-  margin: 0 0 7pt;
-  color: #555555;
-  font-size: 9pt;
+  margin: 0 0 6px;
+  color: #000000;
+  font-size: 10.5pt;
   font-weight: 700;
-  line-height: 1.4;
 }
 
 .email {
-  margin: 0 0 7pt;
+  margin: 0 0 7px;
   color: #777777;
-  font-size: 9pt;
-  line-height: 1.4;
+  font-size: 10pt;
   overflow-wrap: anywhere;
 }
 
 .bio {
-  margin: 0 0 10pt;
+  margin: 0 0 10px;
   color: #777777;
-  font-size: 9pt;
+  font-size: 10pt;
   line-height: 1.4;
-  overflow-wrap: anywhere;
 }
-
-
-/* ==========================================================
-   FULL APHA SECTION TAGS
-   ========================================================== */
 
 .profile-tags {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 5pt;
-  margin-bottom: 9pt;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 4px;
 }
 
 .tag {
   display: inline-block;
   max-width: 100%;
-  padding: 4pt 7pt;
-  border: 1pt solid currentColor;
-  border-radius: 20pt;
-  font-size: 8pt;
-  font-weight: 700;
-  line-height: 1.25;
+  padding: 3px 7px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 9pt;
+  line-height: 1.3;
   overflow-wrap: anywhere;
 }
 
-
 /* ==========================================================
-   PROFILE STATUS LABELS
+   PROFILE STATUS
    ========================================================== */
 
 .status {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   align-self: flex-start;
-  gap: 5pt;
-  margin-top: auto;
-  padding: 4pt 9pt;
-  border: 1pt solid transparent;
-  border-radius: 20pt;
-  font-size: 8pt;
+  margin-top: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 9pt;
+  line-height: 1.3;
   font-weight: 700;
 }
 
 .status.available {
-  border-color: #347449;
-  background: #eaf5ed;
-  color: #347449;
+  background: #e5f2e9;
+  color: #287343;
 }
 
 .status.archived {
-  border-color: #b92736;
-  background: #fbeaec;
-  color: #b92736;
+  background: #f8e6e8;
+  color: #a3202d;
 }
-
-
-/* ==========================================================
-   EMPTY STATE
-   ========================================================== */
-
-.empty-state {
-  margin: 20pt 0;
-  padding: 28pt 16pt;
-  border: 1pt dashed #d9dfe4;
-  border-radius: 9pt;
-  background: #fafbfc;
-  text-align: center;
-}
-
-.empty-state h2 {
-  margin: 0 0 7pt;
-  color: #333333;
-  font-size: 14pt;
-}
-
-.empty-state p {
-  margin: 0;
-  color: #777777;
-  font-size: 10pt;
-}
-
 
 /* ==========================================================
    FOOTER
@@ -612,31 +480,28 @@ body {
 
 footer {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-end;
-  gap: 12pt;
-  min-height: 42pt;
-  padding: 13pt 0 11pt;
-  border-top: 1pt solid var(--line);
-  color: #777777;
+  gap: 15px;
+  margin-top: 25px;
+  padding: 12px 0 3px;
+  border-top: 1px solid var(--line);
 }
 
-.footer-title,
-.footer-note {
+footer p {
   margin: 0;
-  font-size: 9pt;
-  font-weight: 400;
+  font-size: 10pt;
 }
 
 .footer-title {
-  color: #555555;
+  color: #000000;
+  font-weight: 400;
 }
 
 .footer-note {
-  color: #888888;
+  color: #666666;
   text-align: right;
 }
-
 
 /* ==========================================================
    ACCESSIBILITY
@@ -644,84 +509,66 @@ footer {
 
 .sr-only {
   position: absolute;
-  width: 1pt;
-  height: 1pt;
+  width: 1px;
+  height: 1px;
   padding: 0;
-  margin: -1pt;
+  margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
 }
 
-
 /* ==========================================================
    RESPONSIVE LAYOUT
    ========================================================== */
 
-/* Medium desktop */
-
-@media (max-width: 1050pt) {
-  .profile-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
+@media (max-width: 1100px) {
   .topbar {
-    grid-template-columns: 130pt minmax(0, 1fr) 165pt;
-    gap: 16pt;
+    grid-template-columns: 135px minmax(0, 1fr) 220px;
+    gap: 17px;
   }
 
   .brand-logo {
-    width: 125pt;
+    width: 125px;
+  }
+
+  .profile-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-
-/* Tablets */
-
-@media (max-width: 800pt) {
+@media (max-width: 850px) {
   .page {
-    padding-right: 20pt;
-    padding-left: 20pt;
+    padding: 18px 20px 14px;
   }
 
   .topbar {
-    grid-template-columns: 130pt minmax(0, 1fr);
-    gap: 18pt;
+    grid-template-columns: 120px minmax(0, 1fr);
+  }
+
+  .brand-logo {
+    width: 110px;
   }
 
   .header-actions {
     grid-column: 2;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .admin-note {
-    grid-column: 1 / -1;
-    text-align: left;
+    max-width: 360px;
   }
 
   .profile-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-
-  .section-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
-
-/* Small tablets and larger phones */
-
-@media (max-width: 600pt) {
+@media (max-width: 600px) {
   .page {
-    padding-right: 14pt;
-    padding-left: 14pt;
+    padding: 14px 13px 12px;
   }
 
   .topbar {
     grid-template-columns: 1fr;
-    gap: 14pt;
+    gap: 13px;
   }
 
   .brand {
@@ -729,55 +576,49 @@ footer {
   }
 
   .brand-logo {
-    width: 145pt;
+    width: 105px;
   }
 
   .header-actions {
-    grid-column: auto;
-    display: flex;
-  }
-
-  .admin-note {
-    text-align: left;
+    grid-column: 1;
+    width: 100%;
+    max-width: none;
   }
 
   .intro h1 {
-    font-size: 20pt;
+    font-size: 18pt;
+  }
+
+  .filter-panel {
+    gap: 14px;
+  }
+
+  .filter-group {
+    flex-basis: 100%;
   }
 
   .profile-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
-  .section-list {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-/* Phones */
-
-@media (max-width: 420pt) {
-  .profile-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .filter-panel-heading {
-    align-items: flex-start;
-  }
-
-  .filter-options {
-    align-items: flex-start;
-    flex-direction: column;
+  .profile-card {
+    padding: 11px;
   }
 
   footer {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4pt;
+    gap: 5px;
   }
 
   .footer-note {
     text-align: left;
+  }
+}
+
+@media (max-width: 380px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
   }
 }
