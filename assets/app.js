@@ -6,6 +6,7 @@
 
 /* ==========================================================
    APHA SECTIONS
+   "Other" has been removed.
    ========================================================== */
 
 const SECTIONS = [
@@ -33,7 +34,6 @@ const SECTIONS = [
   'Occupational Health and Safety (OHS)',
   'One Health (1HLTH)',
   'Oral Health (OH)',
-  'Other',
   'Pharmacy (PHARM)',
   'Physical Health (PA)',
   'Podiatric Health/Foot and Ankle Health (POD/FAH)',
@@ -229,8 +229,38 @@ function makeCheckboxFilter(container, value, group, color = null) {
 
 
 /* ==========================================================
-   CREATE SECTION FILTERS
+   RESPONSIVE SECTION FILTER LAYOUT
    Alphabetical order, top-to-bottom in each column
+   ========================================================== */
+
+function getSectionColumnCount() {
+  if (window.matchMedia('(max-width: 600pt)').matches) {
+    return 1;
+  }
+
+  if (window.matchMedia('(max-width: 800pt)').matches) {
+    return 2;
+  }
+
+  return 3;
+}
+
+
+function updateSectionFilterLayout() {
+  const sortedSections = [...SECTIONS].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' })
+  );
+
+  const columns = getSectionColumnCount();
+  const rowsPerColumn = Math.ceil(sortedSections.length / columns);
+
+  sectionFilters.style.gridTemplateRows =
+    `repeat(${rowsPerColumn}, auto)`;
+}
+
+
+/* ==========================================================
+   CREATE SECTION FILTERS
    ========================================================== */
 
 function makeSectionFilters() {
@@ -240,18 +270,6 @@ function makeSectionFilters() {
     a.localeCompare(b, undefined, { sensitivity: 'base' })
   );
 
-  /*
-    Three columns filled vertically:
-    Column 1: first alphabetical group
-    Column 2: next alphabetical group
-    Column 3: final alphabetical group
-  */
-
-  const rowsPerColumn = Math.ceil(sortedSections.length / 3);
-
-  sectionFilters.style.gridTemplateRows =
-    `repeat(${rowsPerColumn}, auto)`;
-
   sortedSections.forEach(section => {
     makeCheckboxFilter(
       sectionFilters,
@@ -260,6 +278,8 @@ function makeSectionFilters() {
       getSectionColor(section)
     );
   });
+
+  updateSectionFilterLayout();
 }
 
 
@@ -380,6 +400,7 @@ function matchesSearch(profile, query) {
 
 /* ==========================================================
    SECTION FILTER MATCHING
+   OR logic within APHA Sections
    ========================================================== */
 
 function matchesSections(profile) {
@@ -400,6 +421,7 @@ function matchesSections(profile) {
 
 /* ==========================================================
    CAREER STAGE FILTER MATCHING
+   OR logic within Career Stage
    ========================================================== */
 
 function matchesCareerStage(profile) {
@@ -415,6 +437,7 @@ function matchesCareerStage(profile) {
 
 /* ==========================================================
    STATUS FILTER MATCHING
+   OR logic within Status
    ========================================================== */
 
 function matchesStatus(profile) {
@@ -450,17 +473,25 @@ function makeTag(section) {
 
 /* ==========================================================
    CREATE PROFILE CARD
+   Order:
+   1. Name
+   2. Career stage
+   3. Email
+   4. Bio
+   5. APHA Section tags
+   6. Status
    ========================================================== */
 
 function makeProfileCard(profile) {
   const card = document.createElement('article');
   card.className = 'profile-card';
 
-  const firstSectionColor = getSectionColor(
-    profile.section1 || 'Other'
-  );
+  const firstSectionColor = profile.section1
+    ? getSectionColor(profile.section1)
+    : '#2875b8';
 
   card.style.borderLeftColor = firstSectionColor;
+
 
   /* Full name */
 
@@ -470,20 +501,6 @@ function makeProfileCard(profile) {
 
   card.appendChild(name);
 
-  /* Full APHA Section names */
-
-  const tags = document.createElement('div');
-  tags.className = 'profile-tags';
-
-  if (profile.section1) {
-    tags.appendChild(makeTag(profile.section1));
-  }
-
-  if (profile.section2) {
-    tags.appendChild(makeTag(profile.section2));
-  }
-
-  card.appendChild(tags);
 
   /* Career stage */
 
@@ -497,6 +514,7 @@ function makeProfileCard(profile) {
     card.appendChild(stage);
   }
 
+
   /* Email */
 
   if (profile.email) {
@@ -506,6 +524,7 @@ function makeProfileCard(profile) {
 
     card.appendChild(email);
   }
+
 
   /* Bio */
 
@@ -517,16 +536,32 @@ function makeProfileCard(profile) {
     card.appendChild(bio);
   }
 
+
+  /* Full APHA Section names
+     Placed after the bio */
+
+  const tags = document.createElement('div');
+  tags.className = 'profile-tags';
+
+  if (profile.section1) {
+    tags.appendChild(makeTag(profile.section1));
+  }
+
+  if (profile.section2) {
+    tags.appendChild(makeTag(profile.section2));
+  }
+
+  if (profile.section1 || profile.section2) {
+    card.appendChild(tags);
+  }
+
+
   /* Status */
 
   const statusText = getProfileStatus(profile);
-
   const status = document.createElement('span');
 
-  status.className = `status ${
-    statusText.toLowerCase()
-  }`;
-
+  status.className = `status ${statusText.toLowerCase()}`;
   status.textContent = statusText;
 
   card.appendChild(status);
@@ -561,11 +596,7 @@ function renderProfiles() {
   const totalCount = profiles.length;
 
   resultCount.textContent =
-    `${matchingCount} ${
-      matchingCount === 1 ? 'profile' : 'profiles'
-    } found out of ${totalCount} ${
-      totalCount === 1 ? 'profile' : 'profiles'
-    }`;
+    `${matchingCount} out of ${totalCount} profiles`;
 
   emptyState.hidden = matchingCount !== 0;
 
@@ -650,6 +681,8 @@ clearFiltersButton.addEventListener(
   'click',
   clearAllFilters
 );
+
+window.addEventListener('resize', updateSectionFilterLayout);
 
 
 /* ==========================================================
