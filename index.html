@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Searchable database connecting APHA members seeking sponsors for a one-year membership waiver.">
+  <title>APHA Gift Membership Database</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" aria-label="American Public Health Association Gift Membership Database">
+      <div class="brand-mark" aria-hidden="true">APHA</div>
+      <div class="brand-caption">AMERICAN PUBLIC HEALTH ASSOCIATION</div>
+    </div>
+    <div class="intro">
+      <h1>Gift Membership Database</h1>
+      <p>Searchable database of dedicated current APHA members seeking financial support for a 1-year APHA membership waiver. Prospective donors can review the profiles of prospective recipients, identify which recipient(s) they wish to gift to, and contact APHA staff directly at 1-877-396-APHA (2742) weekdays between 9–5pm Eastern Time to coordinate payment. Please do not attempt to coordinate payment with prospective recipients. All donors and recipients will receive an email receipt of the transaction/processing of the APHA membership from APHA staff.</p>
+      <p class="season-note">“Tis the season of giving!</p>
+    </div>
+    <div class="header-actions">
+      <span class="admin-note">Database is managed by Dr. Sharonda Lovett</span>
+      <a class="button button-muted" href="https://www.apha.org/membership/gift-membership" target="_blank" rel="noopener">Learn more about the<br>APHA Gift Membership Program</a>
+      <a class="button button-red" href="https://forms.gle/DpoUy8tkKuhgpYQf6" target="_blank" rel="noopener">Get Added to the Database</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="directory" aria-label="Search and browse member profiles">
+      <div class="search-row">
+        <label class="sr-only" for="search">Search profiles</label>
+        <span aria-hidden="true">⌕</span>
+        <input id="search" type="search" placeholder="Search names, sections, emails, bios…" autocomplete="off">
+        <button id="clear-search" type="button" aria-label="Clear search">×</button>
+      </div>
+      <div class="filter-panel">
+        <div class="filter-label">SECTION</div>
+        <div id="section-filters" class="section-filters" aria-label="Filter by APHA section"></div>
+        <button id="browse-filters" class="browse-button" type="button" aria-expanded="false">Browse APHA Sections</button>
+        <button id="clear-filters" class="clear-filters" type="button">Clear filters</button>
+      </div>
+      <div id="more-filters" class="more-filters" hidden>
+        <p>Select one or more APHA Sections to filter the database. Selecting multiple sections shows profiles associated with any selected section.</p>
+        <div id="all-section-filters" class="all-section-filters"></div>
+      </div>
+      <div class="directory-meta"><span id="result-count">Loading profiles…</span></div>
+      <div id="directory-status" class="status-message" role="status">Loading approved profiles…</div>
+      <div id="member-grid" class="member-grid"></div>
+      <div id="empty-state" class="empty-state" hidden>
+        <h2>No matching profiles</h2>
+        <p>Try changing your search or section filters, or check back as members are added.</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span>APHA Gift Membership Database</span>
+    <span>Database was created in “November 2026”</span>
+  </footer>
+</body>
+</html>
