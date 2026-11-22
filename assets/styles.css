@@ -1,3 +1,4 @@
+
 :root {
   --ink: #000;
   --muted: #000;
@@ -72,12 +73,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-
-.admin-note {
-  text-align: center;
-  font-size: 11pt;
-  color: #000;
 }
 
 /* BUTTONS */
@@ -387,16 +382,25 @@ footer {
   justify-content: space-between;
   gap: 12px;
   padding: 16px max(22px, calc((100% - 1180px) / 2));
-  font-size: 11px;
+  font-size: 11pt;
 }
 
-/* BOTH FOOTER NOTES HAVE IDENTICAL TYPOGRAPHY */
+/* MANAGEMENT NOTE*/
+
+.admin-note {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 8pt !important;
+  font-weight: 400;
+  color: #000 !important;
+}
+
+/* DATABASE CREATION DATE
+   This font size is independent of the management note. */
 
 .footer-note {
-  display: inline-block;
   font-family: Arial, Helvetica, sans-serif !important;
   font-size: 11pt !important;
-  line-height: 1.45 !important;
   font-weight: 400;
   color: #000 !important;
 }
@@ -443,13 +447,14 @@ body * {
   color: #000 !important;
 }
 
-/* FOOTER FONT OVERRIDE
-   Keeps both footer statements the same size despite global rules. */
+/* FOOTER FONT OVERRIDES */
+
+footer .admin-note {
+  font-size: 11pt !important;
+}
 
 footer .footer-note {
   font-size: 11pt !important;
-  font-family: Arial, Helvetica, sans-serif !important;
-  color: #000 !important;
 }
 
 /* RESPONSIVE LAYOUT: TABLETS */
@@ -528,5 +533,3 @@ footer .footer-note {
     padding: 3px 7px;
   }
 }
-
-
