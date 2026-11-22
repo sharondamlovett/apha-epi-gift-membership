@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Connect APHA members seeking a sponsor for a one-year membership waiver.">
+  <title>APHA Membership Sponsorship Directory</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#" aria-label="APHA sponsorship directory home">
+        <span class="brand-mark">A</span>
+        <span>APHA Membership<br><strong>Sponsorship Directory</strong></span>
+      </a>
+      <a class="nav-link" href="#how-it-works">How it works</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Connect • Support • Strengthen our community</p>
+      <h1>Help an APHA member stay connected.</h1>
+      <p class="hero-copy">Meet public health professionals seeking a sponsor for a one-year APHA membership waiver. Browse member profiles and reach out directly to learn more.</p>
+      <a class="primary-button" href="#request">Add your profile <span aria-hidden="true">→</span></a>
+      <p class="privacy-note">Only your name, email address, and bio appear in the public directory. Your mailing address and phone number are kept out of public listings.</p>
+    </section>
+
+    <section class="directory-section" aria-labelledby="directory-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Find a member to support</p>
+          <h2 id="directory-title">Member directory</h2>
+        </div>
+        <span id="result-count" class="result-count">Loading profiles…</span>
+      </div>
+      <div class="search-wrap">
+        <label class="sr-only" for="search">Search members</label>
+        <span aria-hidden="true" class="search-icon">⌕</span>
+        <input id="search" type="search" placeholder="Search names or bios…" autocomplete="off">
+        <button id="clear-search" class="clear-button" type="button" aria-label="Clear search">×</button>
+      </div>
+      <div id="directory-status" class="status-message" role="status">Connecting to the directory…</div>
+      <div id="member-grid" class="member-grid"></div>
+      <div id="empty-state" class="empty-state" hidden>
+        <div class="empty-icon">✳</div>
+        <h3>No matching profiles</h3>
+        <p>Try another search, or check back as more members join.</p>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="how-section">
+      <p class="eyebrow">A simple way to give back</p>
+      <h2>How it works</h2>
+      <div class="steps">
+        <article><span>01</span><h3>Members sign up</h3><p>Members submit their contact details and a short bio explaining their interests and why an APHA membership waiver would be meaningful.</p></article>
+        <article><span>02</span><h3>Profiles are reviewed</h3><p>Submissions are not published automatically. A directory administrator reviews and approves each profile.</p></article>
+        <article><span>03</span><h3>Sponsors connect</h3><p>Potential sponsors browse approved profiles and contact members using the email address they chose to make public.</p></article>
+      </div>
+    </section>
+
+    <section id="request" class="form-section">
+      <div class="form-intro">
+        <p class="eyebrow">Looking for a sponsor?</p>
+        <h2>Share your story.</h2>
+        <p>Complete the form to request a listing. Your profile will appear after administrator review and approval.</p>
+        <div class="private-callout"><strong>Your privacy matters.</strong><br>Mailing address and phone number are collected for administrative follow-up only. They are never displayed in the public directory.</div>
+      </div>
+      <form id="member-form" class="member-form">
+        <div class="form-grid">
+          <label>Full name <span>*</span><input name="full_name" required maxlength="120" autocomplete="name"></label>
+          <label>Email address <span>*</span><input name="email" type="email" required maxlength="254" autocomplete="email"></label>
+          <label class="full-field">Mailing address <span>*</span><input name="mailing_address" required maxlength="300" autocomplete="street-address"></label>
+          <label>Phone number <span>*</span><input name="phone" type="tel" required maxlength="40" autocomplete="tel"></label>
+          <label class="full-field">Short bio <span>*</span><textarea name="bio" rows="5" required maxlength="1200" placeholder="Tell potential sponsors a little about yourself, your public health interests, and what an APHA membership would mean to you."></textarea><small>Up to 1,200 characters. This will be visible publicly.</small></label>
+        </div>
+        <label class="consent"><input name="publication_consent" type="checkbox" required><span>I understand that my full name, email address, and bio will be publicly visible if my profile is approved. I understand that my mailing address and phone number will remain private.</span></label>
+        <button class="primary-button submit-button" type="submit">Submit for review <span aria-hidden="true">→</span></button>
+        <p id="form-status" class="form-status" role="status"></p>
+        <p class="form-footnote">Please do not include sensitive personal information in your bio. Submitting this form does not guarantee a sponsor or a membership waiver.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner"><span>APHA Membership Sponsorship Directory</span><span>Community connection, powered by members.</span></div>
+  </footer>
+</body>
+</html>
