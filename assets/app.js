@@ -1,12 +1,6 @@
 
 /* ==========================================================
    APHA GIFT MEMBERSHIP DATABASE
-   APPLICATION JAVASCRIPT
-   ========================================================== */
-
-
-/* ==========================================================
-   1. APHA SECTIONS
    ========================================================== */
 
 const SECTIONS = [
@@ -48,199 +42,253 @@ const SECTIONS = [
 
 
 /* ==========================================================
-   2. SECTION COLOR PALETTE
+   SECTION COLORS
    ========================================================== */
 
-const PALETTE = [
-  "#287e8b",
-  "#76518e",
-  "#9b455c",
-  "#8a6b25",
-  "#805b38",
-  "#357f8a",
-  "#426f9d",
-  "#a05a35",
-  "#537b51",
-  "#6e5d9c",
-  "#a14e70",
-  "#527c83"
+const SECTION_PALETTE = [
+  '#287e8b',
+  '#76518e',
+  '#9b455c',
+  '#8a6b25',
+  '#805b38',
+  '#357f8a',
+  '#426f9d',
+  '#a05a35',
+  '#537b51',
+  '#6e5d9c',
+  '#a14e70',
+  '#527c83',
+  '#5274a3',
+  '#9a654e',
+  '#6d8650',
+  '#87618a'
 ];
 
+const SPECIAL_SECTION_COLORS = {
+  'Epidemiology (EPI)': '#2875b8',
+  'Environment (ENV)': '#398451',
+  'Maternal and Child Health (MCH)': '#d66b91'
+};
+
 
 /* ==========================================================
-   3. PAGE ELEMENTS
+   DOM ELEMENTS
    ========================================================== */
 
-const grid = document.getElementById("member-grid");
-const statusEl = document.getElementById("directory-status");
-const countEl = document.getElementById("result-count");
-const emptyEl = document.getElementById("empty-state");
-const searchEl = document.getElementById("search");
+const memberGrid = document.getElementById('member-grid');
+const directoryStatus = document.getElementById('directory-status');
+const resultCount = document.getElementById('result-count');
+const emptyState = document.getElementById('empty-state');
 
-const popularFiltersEl = document.getElementById("section-filters");
-const allFiltersEl = document.getElementById("all-section-filters");
+const searchInput = document.getElementById('search');
+const sectionFilters = document.getElementById('section-filters');
+const allSectionFilters = document.getElementById('all-section-filters');
 
-const browseButton = document.getElementById("browse-filters");
-const moreFilters = document.getElementById("more-filters");
+const browseButton = document.getElementById('browse-filters');
+const moreFilters = document.getElementById('more-filters');
 
-const selectedSections = new Set();
+const clearSearchButton = document.getElementById('clear-search');
+const clearFiltersButton = document.getElementById('clear-filters');
+
+
+/* ==========================================================
+   APPLICATION STATE
+   ========================================================== */
 
 let profiles = [];
+let selectedSections = new Set();
 
 
 /* ==========================================================
-   4. SECTION COLORS
+   SECTION COLOR HELPERS
    ========================================================== */
 
-function colorFor(text) {
-  let hash = 0;
-
-  for (let i = 0; i < text.length; i++) {
-    hash = (hash * 31 + text.charCodeAt(i)) >>> 0;
+function getSectionColor(section) {
+  if (SPECIAL_SECTION_COLORS[section]) {
+    return SPECIAL_SECTION_COLORS[section];
   }
 
-  return PALETTE[hash % PALETTE.length];
+  let hash = 0;
+
+  for (let i = 0; i < section.length; i++) {
+    hash = ((hash << 5) - hash) + section.charCodeAt(i);
+    hash |= 0;
+  }
+
+  const index = Math.abs(hash) % SECTION_PALETTE.length;
+
+  return SECTION_PALETTE[index];
 }
 
-function sectionColor(section) {
-  return colorFor(section || "Other");
-}
 
-
-// Convert a HEX color into a 50%-transparent HEX color.
-// The alpha value "80" represents approximately 50% opacity.
-
-function transparentColor(hex) {
+function getTransparentColor(hex) {
   return `${hex}80`;
 }
 
 
+function getSectionAbbreviation(section) {
+  const match = section.match(/\(([^)]+)\)$/);
+
+  if (match) {
+    return match[1];
+  }
+
+  return section;
+}
+
+
 /* ==========================================================
-   5. POPULAR SECTION FILTER BUTTONS
+   SECTION FILTER HELPERS
    ========================================================== */
 
-function buildFilter(section, container, compact = false) {
-  const button = document.createElement("button");
+function getSectionsInUse() {
+  const usedSections = new Set();
 
-  button.type = "button";
-  button.className = "section-chip";
-  button.dataset.section = section;
+  profiles.forEach(profile => {
+    if (profile.section1) {
+      usedSections.add(profile.section1);
+    }
 
-  button.textContent = compact
-    ? section.replace(/\s*\([^)]*\)$/, "")
-    : section;
+    if (profile.section2) {
+      usedSections.add(profile.section2);
+    }
+  });
 
-  button.setAttribute(
-    "aria-pressed",
-    selectedSections.has(section) ? "true" : "false"
+  return [...usedSections].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' })
   );
-
-  button.addEventListener("click", () => {
-    toggleSection(section);
-  });
-
-  container.append(button);
 }
 
 
-function updateFilterButtons() {
-  document.querySelectorAll(".section-chip").forEach(button => {
-    const section = button.dataset.section;
-    const selected = selectedSections.has(section);
+function getSectionCounts() {
+  const counts = {};
 
-    button.setAttribute(
-      "aria-pressed",
-      selected ? "true" : "false"
-    );
+  profiles.forEach(profile => {
+    const uniqueSections = new Set([
+      profile.section1,
+      profile.section2
+    ].filter(Boolean));
 
-    button.classList.toggle("active", selected);
+    uniqueSections.forEach(section => {
+      counts[section] = (counts[section] || 0) + 1;
+    });
   });
+
+  return counts;
 }
 
 
 /* ==========================================================
-   6. COMPLETE SECTION FILTER LIST
+   CREATE QUICK SECTION FILTERS
    ========================================================== */
 
-function makeFilters() {
-  allFiltersEl.replaceChildren();
+function makeQuickFilters() {
+  sectionFilters.innerHTML = '';
 
-  SECTIONS.forEach(section => {
-    const label = document.createElement("label");
-    label.className = "filter-option";
+  const counts = getSectionCounts();
 
-    const input = document.createElement("input");
-    input.type = "checkbox";
-    input.value = section;
+  const popularSections = Object.keys(counts)
+    .sort((a, b) => {
+      if (counts[b] !== counts[a]) {
+        return counts[b] - counts[a];
+      }
 
-    input.addEventListener("change", () => {
+      return a.localeCompare(b);
+    })
+    .slice(0, 6);
+
+  popularSections.forEach(section => {
+    const button = document.createElement('button');
+
+    button.type = 'button';
+    button.className = 'section-chip';
+    button.textContent = getSectionAbbreviation(section);
+    button.title = section;
+    button.dataset.section = section;
+    button.setAttribute('aria-pressed', 'false');
+
+    button.addEventListener('click', () => {
       toggleSection(section);
     });
 
-    const swatch = document.createElement("span");
-    swatch.className = "filter-swatch";
-    swatch.style.backgroundColor = sectionColor(section);
-
-    label.append(
-      input,
-      swatch,
-      document.createTextNode(section)
-    );
-
-    allFiltersEl.append(label);
+    sectionFilters.appendChild(button);
   });
 }
 
 
 /* ==========================================================
-   7. POPULAR SECTIONS
+   CREATE COMPLETE ALPHABETICAL SECTION BROWSER
    ========================================================== */
 
-// Rank sections by the number of profiles associated with them.
-// Each section is counted once per profile.
-// Ties are sorted alphabetically.
+function makeAllSectionFilters() {
+  allSectionFilters.innerHTML = '';
 
-function makePopularFilters() {
-  popularFiltersEl.replaceChildren();
+  const sections = [...SECTIONS].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' })
+  );
 
-  const counts = new Map();
+  sections.forEach(section => {
+    const label = document.createElement('label');
+    label.className = 'filter-option';
 
-  profiles.forEach(person => {
-    const sections = [
-      person.section1,
-      person.section2
-    ].filter(Boolean);
+    const checkbox = document.createElement('input');
 
-    [...new Set(sections)].forEach(section => {
-      counts.set(
-        section,
-        (counts.get(section) || 0) + 1
-      );
+    checkbox.type = 'checkbox';
+    checkbox.value = section;
+    checkbox.checked = selectedSections.has(section);
+
+    const swatch = document.createElement('span');
+    swatch.className = 'filter-swatch';
+
+    const color = getSectionColor(section);
+
+    swatch.style.backgroundColor = color;
+
+    const text = document.createElement('span');
+    text.textContent = section;
+
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        selectedSections.add(section);
+      } else {
+        selectedSections.delete(section);
+      }
+
+      renderFilters();
+      renderProfiles();
     });
-  });
 
-  const popular = [...counts.entries()].sort((a, b) => {
-    return b[1] - a[1] || a[0].localeCompare(b[0]);
-  });
+    label.appendChild(checkbox);
+    label.appendChild(swatch);
+    label.appendChild(text);
 
-  if (!popular.length) {
-    const note = document.createElement("span");
-    note.className = "filter-empty-note";
-    note.textContent =
-      "Section filters will appear as profiles are added";
-
-    popularFiltersEl.append(note);
-    return;
-  }
-
-  popular.forEach(([section]) => {
-    buildFilter(section, popularFiltersEl, true);
+    allSectionFilters.appendChild(label);
   });
 }
 
 
 /* ==========================================================
-   8. SECTION FILTER SELECTION
+   UPDATE FILTER APPEARANCE
+   ========================================================== */
+
+function renderFilters() {
+  document.querySelectorAll('.section-chip').forEach(button => {
+    const selected = selectedSections.has(button.dataset.section);
+
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
+
+  allSectionFilters
+    .querySelectorAll('input[type="checkbox"]')
+    .forEach(checkbox => {
+      checkbox.checked = selectedSections.has(checkbox.value);
+    });
+}
+
+
+/* ==========================================================
+   SECTION SELECTION
    ========================================================== */
 
 function toggleSection(section) {
@@ -250,279 +298,322 @@ function toggleSection(section) {
     selectedSections.add(section);
   }
 
-  document.querySelectorAll(".filter-option input").forEach(input => {
-    input.checked = selectedSections.has(input.value);
-  });
+  renderFilters();
+  renderProfiles();
+}
 
-  updateFilterButtons();
+
+function clearAllFilters() {
+  selectedSections.clear();
+  searchInput.value = '';
+
+  renderFilters();
   renderProfiles();
 }
 
 
 /* ==========================================================
-   9. PROFILE SECTION TAGS
+   PROFILE SEARCH
    ========================================================== */
 
-function makeTag(text) {
-  const tag = document.createElement("span");
+function matchesSearch(profile, query) {
+  if (!query) {
+    return true;
+  }
 
-  tag.className = "tag";
+  const searchableText = [
+    profile.full_name,
+    profile.email,
+    profile.bio,
+    profile.section1,
+    profile.section2
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
 
-  const color = sectionColor(text);
+  return searchableText.includes(query.toLowerCase());
+}
 
-  // Section-colored text and outline.
+
+function matchesSections(profile) {
+  if (selectedSections.size === 0) {
+    return true;
+  }
+
+  const profileSections = [
+    profile.section1,
+    profile.section2
+  ].filter(Boolean);
+
+  return profileSections.some(section =>
+    selectedSections.has(section)
+  );
+}
+
+
+/* ==========================================================
+   EMAIL DISPLAY
+   ========================================================== */
+
+function formatEmail(email) {
+  if (!email) {
+    return '';
+  }
+
+  return String(email)
+    .replace(/\s*\[at\]\s*/gi, '@')
+    .replace(/\s*@\s*/g, ' [at] ')
+    .replace(/\s*\[dot\]\s*/gi, '.')
+    .replace(/\s*\.\s*/g, ' dot ');
+}
+
+
+/* ==========================================================
+   CREATE SECTION TAG
+   ========================================================== */
+
+function makeTag(section) {
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+
+  const color = getSectionColor(section);
+
+  tag.textContent = getSectionAbbreviation(section);
+  tag.title = section;
+
   tag.style.color = color;
   tag.style.borderColor = color;
-
-  // Same section color with approximately 50% transparency.
-  tag.style.backgroundColor = transparentColor(color);
-
-  tag.textContent = text;
+  tag.style.backgroundColor = getTransparentColor(color);
 
   return tag;
 }
 
 
 /* ==========================================================
-   10. PROFILE STATUS
+   PROFILE STATUS
    ========================================================== */
 
-function makeStatus(statusValue) {
-  const status = document.createElement("span");
+function getProfileStatus(profile) {
+  const statusValue = String(
+    profile.status || ''
+  ).toLowerCase();
 
-  const archived = statusValue === "Archived";
+  if (
+    statusValue === 'archived' ||
+    statusValue === 'inactive' ||
+    profile.archived === true
+  ) {
+    return 'Archived';
+  }
 
-  status.className = archived
-    ? "status archived"
-    : "status available";
-
-  status.textContent = archived
-    ? "Archived"
-    : "Available";
-
-  return status;
+  return 'Available';
 }
 
 
 /* ==========================================================
-   11. PROFILE CARD GENERATION
+   CREATE PROFILE CARD
    ========================================================== */
 
-function createProfileCard(person) {
-  const firstSection = person.section1 || "Other";
+function makeProfileCard(profile) {
+  const card = document.createElement('article');
+  card.className = 'profile-card';
 
-  const card = document.createElement("article");
-
-  card.className = "profile-card";
-
-  // Left card accent matches the first APHA Section.
-
-  card.style.borderLeftColor = sectionColor(firstSection);
-
-
-  // Full name.
-
-  const name = document.createElement("h3");
-  name.className = "profile-name";
-  name.textContent = person.full_name;
-
-
-  // Two APHA Section tags.
-
-  const tags = document.createElement("div");
-  tags.className = "profile-tags";
-
-  tags.append(
-    makeTag(firstSection),
-    makeTag(person.section2 || "Other")
+  const firstSectionColor = getSectionColor(
+    profile.section1 || 'Other'
   );
 
+  card.style.borderLeftColor = firstSectionColor;
 
-  // Email displayed as text, not a mailto link.
+  /* Name */
 
-  const email = document.createElement("span");
-  email.className = "email";
-  email.textContent = person.email;
+  const name = document.createElement('h2');
+  name.className = 'profile-name';
+  name.textContent = profile.full_name || 'Name unavailable';
 
+  card.appendChild(name);
 
-  // Profile biography.
+  /* Section tags */
 
-  const bio = document.createElement("p");
-  bio.className = "bio";
-  bio.textContent = person.bio;
+  const tags = document.createElement('div');
+  tags.className = 'profile-tags';
 
+  if (profile.section1) {
+    tags.appendChild(makeTag(profile.section1));
+  }
 
-  // Available / Archived status.
+  if (profile.section2) {
+    tags.appendChild(makeTag(profile.section2));
+  }
 
-  const status = makeStatus(person.status);
+  card.appendChild(tags);
 
+  /* Email */
 
-  // Assemble profile card.
+  if (profile.email) {
+    const email = document.createElement('p');
+    email.className = 'email';
+    email.textContent = formatEmail(profile.email);
 
-  card.append(
-    name,
-    tags,
-    email,
-    bio,
-    status
-  );
+    card.appendChild(email);
+  }
+
+  /* Bio */
+
+  if (profile.bio) {
+    const bio = document.createElement('p');
+    bio.className = 'bio';
+    bio.textContent = profile.bio;
+
+    card.appendChild(bio);
+  }
+
+  /* Availability status */
+
+  const statusText = getProfileStatus(profile);
+
+  const status = document.createElement('span');
+
+  status.className = `status ${
+    statusText.toLowerCase()
+  }`;
+
+  status.textContent = statusText;
+
+  card.appendChild(status);
 
   return card;
 }
 
 
 /* ==========================================================
-   12. DISPLAY AND FILTER PROFILES
+   RENDER PROFILES
    ========================================================== */
 
 function renderProfiles() {
-  const query = searchEl.value.trim().toLowerCase();
+  const query = searchInput.value.trim();
 
-  const filtered = profiles.filter(person => {
-    const sections = [
-      person.section1,
-      person.section2
-    ].filter(Boolean);
-
-    const searchableText = [
-      person.full_name,
-      person.email,
-      person.bio,
-      ...sections
-    ].join(" ").toLowerCase();
-
-    const textMatch = searchableText.includes(query);
-
-    // Multiple selected sections use OR logic.
-
-    const sectionMatch =
-      selectedSections.size === 0 ||
-      sections.some(section => selectedSections.has(section));
-
-    return textMatch && sectionMatch;
+  const filteredProfiles = profiles.filter(profile => {
+    return (
+      matchesSearch(profile, query) &&
+      matchesSections(profile)
+    );
   });
 
+  memberGrid.innerHTML = '';
 
-  // Remove previously displayed cards.
-
-  grid.replaceChildren();
-
-
-  // Update profile count.
-
-  countEl.textContent =
-    `${filtered.length} ${filtered.length === 1 ? "profile" : "profiles"}`;
-
-
-  // Display empty state when no profiles match.
-
-  emptyEl.hidden = filtered.length !== 0;
-
-
-  // Generate profile cards.
-
-  filtered.forEach(person => {
-    grid.append(createProfileCard(person));
+  filteredProfiles.forEach(profile => {
+    memberGrid.appendChild(makeProfileCard(profile));
   });
+
+  const total = filteredProfiles.length;
+
+  resultCount.textContent =
+    `${total} ${total === 1 ? 'profile' : 'profiles'} found`;
+
+  emptyState.hidden = total !== 0;
+
+  directoryStatus.hidden = true;
 }
 
 
 /* ==========================================================
-   13. LOAD PROFILE DATABASE
+   LOAD PROFILE DATA
    ========================================================== */
 
 async function loadProfiles() {
   try {
-    const response = await fetch(
-      "assets/profiles.json",
-      { cache: "no-store" }
-    );
+    directoryStatus.hidden = false;
+    directoryStatus.textContent = 'Loading approved profiles…';
+
+    const response = await fetch('assets/profiles.json', {
+      cache: 'no-store'
+    });
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      throw new Error(
+        `Unable to load profiles (${response.status}).`
+      );
     }
 
     const data = await response.json();
 
-    profiles = Array.isArray(data)
-      ? data.filter(person =>
-          person &&
-          typeof person.full_name === "string" &&
-          typeof person.email === "string" &&
-          typeof person.bio === "string" &&
-          typeof person.section1 === "string" &&
-          typeof person.section2 === "string"
-        )
-      : [];
+    if (!Array.isArray(data)) {
+      throw new Error(
+        'The profiles file must contain a JSON array.'
+      );
+    }
 
-    statusEl.hidden = true;
+    profiles = data.filter(profile => {
+      return (
+        profile &&
+        profile.full_name &&
+        profile.email &&
+        profile.bio &&
+        profile.section1 &&
+        profile.section2
+      );
+    });
 
-    makePopularFilters();
+    makeQuickFilters();
+    makeAllSectionFilters();
+    renderFilters();
     renderProfiles();
 
+    if (profiles.length === 0) {
+      directoryStatus.hidden = false;
+      directoryStatus.textContent =
+        'No approved profiles are currently available.';
+    }
+
   } catch (error) {
-    console.error("Could not load profiles:", error);
+    console.error('Profile loading error:', error);
 
-    statusEl.hidden = false;
+    directoryStatus.hidden = false;
+    directoryStatus.textContent =
+      'Unable to load profiles. Please refresh the page or try again later.';
 
-    statusEl.textContent =
-      "Profiles could not be loaded. Please try again later.";
-
-    countEl.textContent = "Unavailable";
+    resultCount.textContent = 'Profiles unavailable';
   }
 }
 
 
 /* ==========================================================
-   14. SEARCH CONTROLS
+   EVENT LISTENERS
    ========================================================== */
 
-searchEl.addEventListener("input", renderProfiles);
+searchInput.addEventListener('input', renderProfiles);
 
-document.getElementById("clear-search").addEventListener("click", () => {
-  searchEl.value = "";
+clearSearchButton.addEventListener('click', () => {
+  searchInput.value = '';
   renderProfiles();
-  searchEl.focus();
+  searchInput.focus();
 });
 
+clearFiltersButton.addEventListener('click', clearAllFilters);
 
-/* ==========================================================
-   15. CLEAR SECTION FILTERS
-   ========================================================== */
+browseButton.addEventListener('click', () => {
+  const isExpanded = browseButton.getAttribute(
+    'aria-expanded'
+  ) === 'true';
 
-document.getElementById("clear-filters").addEventListener("click", () => {
-  selectedSections.clear();
-
-  document.querySelectorAll(".filter-option input").forEach(input => {
-    input.checked = false;
-  });
-
-  updateFilterButtons();
-  renderProfiles();
-});
-
-
-/* ==========================================================
-   16. SHOW / HIDE COMPLETE SECTION LIST
-   ========================================================== */
-
-browseButton.addEventListener("click", () => {
-  moreFilters.hidden = !moreFilters.hidden;
+  const nextExpanded = !isExpanded;
 
   browseButton.setAttribute(
-    "aria-expanded",
-    String(!moreFilters.hidden)
+    'aria-expanded',
+    String(nextExpanded)
   );
 
-  browseButton.textContent = moreFilters.hidden
-    ? "Browse APHA Sections"
-    : "Hide APHA Sections";
+  moreFilters.hidden = !nextExpanded;
+
+  browseButton.textContent = nextExpanded
+    ? 'Hide APHA Sections'
+    : 'Browse APHA Sections';
 });
 
 
 /* ==========================================================
-   17. INITIALIZE DATABASE
+   INITIALIZE APPLICATION
    ========================================================== */
 
-makeFilters();
 loadProfiles();
