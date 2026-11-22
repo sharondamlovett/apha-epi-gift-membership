@@ -1,22 +1,12 @@
 
-/* ==========================================================
-   APHA GIFT MEMBERSHIP DATABASE
-   COMPLETE STYLESHEET
-   ========================================================== */
-
-
-/* ==========================================================
-   1. GLOBAL SETTINGS
-   ========================================================== */
-
 :root {
-  --ink: #000;
-  --muted: #777;
-  --grey: #777;
+  --ink: #000000;
+  --muted: #777777;
   --line: #e5e9ed;
-  --pale: #f3f5f7;
+  --pale: #f5f7f9;
   --blue: #2875b8;
   --red: #b92736;
+  --card-shadow: 0 3pt 12pt rgba(0, 0, 0, 0.07);
 }
 
 * {
@@ -24,258 +14,226 @@
 }
 
 html {
-  font-size: 11pt;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background: #fff;
+  background: #ffffff;
   color: var(--ink);
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 11pt;
   line-height: 1.45;
 }
-
-button,
-input,
-select,
-textarea {
-  font-family: Arial, sans-serif;
-  font-size: 11pt;
-}
-
-button {
-  cursor: pointer;
-}
-
-
-/* ==========================================================
-   2. PAGE LAYOUT
-   ========================================================== */
 
 .page {
   width: 100%;
   max-width: 1200pt;
   margin: 0 auto;
-  padding: 24pt;
+  padding: 24pt 32pt 0;
 }
-
-header,
-main,
-footer {
-  width: 100%;
-}
-
 
 /* ==========================================================
-   3. HEADER AND APHA LOGO
+   HEADER
    ========================================================== */
 
 .topbar {
-  width: 100%;
-  margin-bottom: 22pt;
+  display: grid;
+  grid-template-columns: 160pt minmax(0, 1fr) 175pt;
+  align-items: start;
+  gap: 22pt;
+  padding: 8pt 0 22pt;
+  border-bottom: 1pt solid var(--line);
 }
 
 .brand {
   display: flex;
-  align-items: center;
-  gap: 12pt;
-  margin-bottom: 22pt;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  padding-top: 5pt;
 }
 
 .brand-logo {
   display: block;
-  width: 180pt;
+  width: 150pt;
   max-width: 100%;
   height: auto;
   object-fit: contain;
-  object-position: left center;
 }
 
-
-/* ==========================================================
-   4. INTRODUCTION
-   ========================================================== */
-
 .intro {
-  margin-bottom: 18pt;
+  min-width: 0;
 }
 
 .intro h1 {
   margin: 0 0 8pt;
-  color: var(--ink);
+  color: #000000;
   font-size: 20pt;
   font-weight: 700;
   line-height: 1.2;
 }
 
 .intro p {
-  margin: 0 0 10pt;
-  color: var(--ink);
+  margin: 0 0 8pt;
+  color: #333333;
   font-size: 11pt;
   line-height: 1.5;
 }
 
-.season-note {
+.intro .season-note {
   margin-top: 10pt;
+  color: var(--red);
   font-size: 11pt;
   font-weight: 700;
+  font-style: italic;
 }
-
-
-/* ==========================================================
-   5. HEADER ACTIONS
-   ========================================================== */
 
 .header-actions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10pt;
-  margin-top: 14pt;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 9pt;
+  min-width: 0;
 }
 
 .admin-note {
-  flex-basis: 100%;
-  margin: 0;
-  color: var(--ink);
-  font-size: 11pt;
-}
-
-
-/* ==========================================================
-   6. LINKS AND BUTTONS
-   ========================================================== */
-
-a {
-  color: var(--blue);
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-button,
-.button {
-  padding: 7pt 12pt;
-  border: 1pt solid var(--line);
-  border-radius: 5pt;
-  background: #fff;
-  color: var(--ink);
-  font-size: 11pt;
-  text-decoration: none;
-}
-
-button:hover,
-.button:hover {
-  background: var(--pale);
-}
-
-.button {
-  display: inline-block;
-  text-align: center;
+  display: block;
+  margin-bottom: 3pt;
+  color: #666666;
+  font-size: 9pt;
   line-height: 1.4;
+  text-align: center;
+}
+
+.button {
+  display: block;
+  width: 100%;
+  padding: 9pt 11pt;
+  border: 1pt solid transparent;
+  border-radius: 6pt;
+  font-size: 10pt;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-1pt);
 }
 
 .button-muted {
-  border-color: var(--line);
-  background: var(--pale);
-  color: var(--ink);
+  border-color: #d9e1e8;
+  background: #f4f6f8;
+  color: #245b82;
+}
+
+.button-muted:hover {
+  background: #eaf0f5;
 }
 
 .button-red {
-  border-color: var(--red);
   background: var(--red);
-  color: #fff;
+  color: #ffffff;
 }
 
 .button-red:hover {
-  background: #941e2b;
-  color: #fff;
+  background: #98202d;
 }
 
-
 /* ==========================================================
-   7. MAIN DIRECTORY
+   DIRECTORY
    ========================================================== */
 
 .directory {
-  width: 100%;
+  padding: 22pt 0 30pt;
 }
 
-
-/* ==========================================================
-   8. SEARCH CONTROLS
-   ========================================================== */
-
 .controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10pt;
-  margin-bottom: 18pt;
+  margin-bottom: 14pt;
 }
 
 .search-box {
-  flex: 1 1 220pt;
-  min-width: 180pt;
+  display: flex;
+  align-items: center;
+  gap: 9pt;
+  width: 100%;
+  min-height: 38pt;
+  padding: 5pt 10pt;
+  border: 1pt solid #dfe4e8;
+  border-radius: 7pt;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-box:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2pt rgba(40, 117, 184, 0.10);
+}
+
+.search-icon {
+  color: #777777;
+  font-size: 19pt;
+  line-height: 1;
 }
 
 .search-box input {
-  width: 100%;
-  padding: 9pt 11pt;
-  border: 1pt solid var(--line);
-  border-radius: 6pt;
-  background: #fff;
-  color: var(--ink);
-  font-size: 11pt;
+  flex: 1;
+  min-width: 0;
+  padding: 5pt 0;
+  border: 0;
   outline: none;
-}
-
-.search-box input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 2pt rgba(40, 117, 184, 0.12);
+  background: transparent;
+  color: #222222;
+  font-family: inherit;
+  font-size: 11pt;
 }
 
 .search-box input::placeholder {
-  color: #888;
-  opacity: 1;
+  color: #999999;
 }
 
+#clear-search {
+  padding: 2pt 6pt;
+  border: 0;
+  background: transparent;
+  color: #777777;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 17pt;
+  line-height: 1;
+}
+
+#clear-search:hover {
+  color: var(--red);
+}
 
 /* ==========================================================
-   9. SECTION FILTER PANEL
+   SECTION FILTERS
    ========================================================== */
 
 .section-filter {
-  margin-bottom: 20pt;
-  padding: 14pt;
+  margin-bottom: 12pt;
+  padding: 13pt 15pt;
   border: 1pt solid var(--line);
-  border-radius: 7pt;
-  background: var(--pale);
+  border-radius: 8pt;
+  background: #fafbfc;
 }
 
-.section-filter h2 {
-  margin: 0 0 10pt;
-  color: var(--ink);
-  font-size: 11pt;
+.filter-label {
+  margin-bottom: 9pt;
+  color: #555555;
+  font-size: 9pt;
   font-weight: 700;
+  letter-spacing: 0.7pt;
 }
-
-.section-filter p {
-  margin: 0 0 10pt;
-  color: var(--ink);
-  font-size: 11pt;
-}
-
-
-/* ==========================================================
-   10. SECTION FILTER BUTTONS
-   ========================================================== */
 
 .section-list {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 6pt;
 }
 
@@ -283,310 +241,367 @@ button:hover,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 5pt 9pt;
-  border: 1pt solid var(--line);
+  min-height: 23pt;
+  padding: 4pt 9pt;
+  border: 1pt solid #d7dfe5;
   border-radius: 20pt;
-  background: #fff;
-  color: var(--ink);
-  font-size: 11pt;
-  line-height: 1.2;
+  background: #ffffff;
+  color: #444444;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  font-family: inherit;
+  font-size: 9pt;
+  line-height: 1.3;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .section-chip:hover {
-  background: #e9edf1;
-}
-
-.section-chip.active,
-.section-chip[aria-pressed="true"] {
   border-color: var(--blue);
-  background: var(--blue);
-  color: #fff;
+  color: var(--blue);
 }
 
+.section-chip.active {
+  border-color: var(--blue);
+  background: #eaf3fa;
+  color: #174f79;
+  font-weight: 700;
+}
 
-/* ==========================================================
-   11. SECTION FILTER ACTIONS
-   ========================================================== */
-
-.section-filter-actions {
+.filter-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8pt;
-  margin-top: 12pt;
+  align-items: center;
+  gap: 12pt;
+  margin-top: 11pt;
 }
 
-.section-filter-actions button {
-  padding: 6pt 10pt;
-  font-size: 11pt;
+.browse-button,
+.clear-filters {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 9pt;
+  font-weight: 700;
 }
 
+.browse-button {
+  color: var(--blue);
+}
 
-/* ==========================================================
-   12. COMPLETE SECTION FILTER LIST
-   ========================================================== */
+.browse-button:hover {
+  text-decoration: underline;
+}
+
+.clear-filters {
+  color: #888888;
+}
+
+.clear-filters:hover {
+  color: var(--red);
+}
 
 .more-filters {
-  margin-bottom: 18pt;
+  margin: 10pt 0 15pt;
+  padding: 13pt 15pt;
+  border: 1pt solid var(--line);
+  border-radius: 8pt;
+  background: #ffffff;
 }
 
-.more-filters[hidden] {
-  display: none;
+.more-filters p {
+  margin: 0 0 11pt;
+  color: #666666;
+  font-size: 10pt;
+}
+
+.all-section-filters {
+  align-items: flex-start;
 }
 
 .filter-option {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 7pt;
-  padding: 6pt 8pt;
-  border: 1pt solid var(--line);
+  gap: 5pt;
+  padding: 5pt 8pt;
+  border: 1pt solid #e1e5e9;
   border-radius: 5pt;
-  background: #fff;
-  color: var(--ink);
-  font-size: 11pt;
+  background: #ffffff;
+  color: #444444;
   cursor: pointer;
+  font-size: 9pt;
+}
+
+.filter-option:hover {
+  border-color: var(--blue);
 }
 
 .filter-option input {
-  width: 11pt;
-  height: 11pt;
   margin: 0;
-  cursor: pointer;
+  accent-color: var(--blue);
 }
 
 .filter-swatch {
   display: inline-block;
-  width: 10pt;
-  height: 10pt;
+  width: 8pt;
+  height: 8pt;
   border-radius: 50%;
-  flex-shrink: 0;
 }
 
 .filter-empty-note {
-  color: var(--muted);
-  font-size: 11pt;
+  color: #777777;
+  font-size: 10pt;
 }
 
-
 /* ==========================================================
-   13. DIRECTORY RESULTS COUNT
+   DIRECTORY RESULTS
    ========================================================== */
 
-.results-count {
-  margin: 0 0 12pt;
-  color: var(--ink);
-  font-size: 11pt;
+.directory-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16pt 0 10pt;
+  color: #777777;
+  font-size: 9pt;
 }
 
-
-/* ==========================================================
-   14. PROFILE GRID
-   ========================================================== */
+.status-message {
+  margin: 10pt 0;
+  color: #777777;
+  font-size: 10pt;
+}
 
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16pt;
+  gap: 14pt;
   align-items: stretch;
 }
 
-
 /* ==========================================================
-   15. PROFILE CARDS
+   PROFILE CARDS
    ========================================================== */
 
 .profile-card {
-  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  padding: 16pt;
-  border: 1pt solid #e4e8ec;
-  border-left: 6pt solid var(--blue);
+  min-height: 145pt;
+  padding: 15pt 16pt;
+  border: 1pt solid #e7eaed;
+  border-left: 5pt solid var(--blue);
   border-radius: 9pt;
-  background: #fff;
-  box-shadow: 0 2pt 9pt rgba(0, 0, 0, 0.08);
-  overflow-wrap: anywhere;
-  transition: box-shadow 0.18s ease, transform 0.18s ease;
+  background: #ffffff;
+  box-shadow: var(--card-shadow);
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .profile-card:hover {
-  box-shadow: 0 4pt 14pt rgba(0, 0, 0, 0.12);
-  transform: translateY(-1pt);
+  transform: translateY(-2pt);
+  box-shadow: 0 5pt 16pt rgba(0, 0, 0, 0.11);
 }
 
-.profile-card h3 {
-  margin: 0 0 8pt;
-  color: var(--ink);
+.profile-name {
+  margin: 0 0 9pt;
+  color: #222222;
   font-size: 13pt;
   font-weight: 700;
   line-height: 1.3;
 }
 
-
-/* ==========================================================
-   16. PROFILE SECTION TAGS
-   ========================================================== */
-
 .profile-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6pt;
-  margin: 5pt 0 10pt;
+  align-items: center;
+  gap: 5pt;
+  margin-bottom: 10pt;
 }
 
 .tag {
   display: inline-block;
+  max-width: 100%;
   padding: 4pt 8pt;
-  border: 1pt solid var(--line);
-  border-radius: 15pt;
-  background: transparent;
-  color: var(--ink);
-  font-size: 11pt;
+  border: 1pt solid currentColor;
+  border-radius: 20pt;
+  font-size: 8.5pt;
+  font-weight: 700;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
-
-/* ==========================================================
-   17. PROFILE EMAIL
-   ========================================================== */
-
 .email {
-  display: block;
-  margin: 3pt 0 7pt;
-  color: #777;
-  font-size: 11pt;
+  margin: 0 0 7pt;
+  color: #777777;
+  font-size: 9.5pt;
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
-
-/* ==========================================================
-   18. PROFILE BIOGRAPHY
-   ========================================================== */
-
 .bio {
-  margin: 4pt 0 10pt;
-  color: #777;
-  font-size: 11pt;
-  line-height: 1.5;
+  margin: 0 0 12pt;
+  color: #777777;
+  font-size: 10pt;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
-
-/* ==========================================================
-   19. PROFILE STATUS
-   ========================================================== */
-
 .status {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   align-self: flex-start;
+  gap: 5pt;
   margin-top: auto;
-  padding: 4pt 9pt;
-  border: 1pt solid var(--line);
-  border-radius: 15pt;
-  color: var(--ink);
-  font-size: 11pt;
-  line-height: 1.2;
+  padding: 4pt 8pt;
+  border-radius: 20pt;
+  font-size: 8.5pt;
+  font-weight: 700;
 }
 
 .status.available {
-  border-color: #5b9b70;
-  background: #edf6ef;
-  color: #245c35;
+  background: #eaf5ed;
+  color: #347449;
 }
 
 .status.archived {
-  border-color: #999;
-  background: #f1f1f1;
-  color: #555;
+  background: #f0f1f2;
+  color: #777777;
 }
 
-
 /* ==========================================================
-   20. LOADING AND EMPTY STATES
+   EMPTY STATE
    ========================================================== */
 
 .empty-state {
-  margin-top: 12pt;
-  padding: 20pt;
-  border: 1pt solid var(--line);
-  border-radius: 7pt;
-  background: var(--pale);
-  color: var(--ink);
-  font-size: 11pt;
+  margin: 20pt 0;
+  padding: 28pt 16pt;
+  border: 1pt dashed #d9dfe4;
+  border-radius: 9pt;
+  background: #fafbfc;
   text-align: center;
 }
 
 .empty-state h2 {
-  margin: 0 0 8pt;
-  color: var(--ink);
-  font-size: 13pt;
+  margin: 0 0 7pt;
+  color: #333333;
+  font-size: 14pt;
 }
 
 .empty-state p {
   margin: 0;
-  color: var(--ink);
-  font-size: 11pt;
+  color: #777777;
+  font-size: 10pt;
 }
-
-.empty-state[hidden] {
-  display: none;
-}
-
-.status-message {
-  margin-bottom: 12pt;
-  padding: 12pt;
-  border: 1pt solid var(--line);
-  border-radius: 7pt;
-  background: var(--pale);
-  color: var(--ink);
-  font-size: 11pt;
-}
-
 
 /* ==========================================================
-   21. FOOTER
+   FOOTER
    ========================================================== */
 
 footer {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 8pt;
-  width: 100%;
-  margin-top: 34pt;
-  padding: 12pt 0 4pt;
+  gap: 12pt;
+  min-height: 42pt;
+  padding: 13pt 0 11pt;
   border-top: 1pt solid var(--line);
-  color: var(--ink);
-  font-size: 11pt;
-  line-height: 1.5;
+  color: #777777;
+}
+
+.footer-title,
+.footer-note {
+  margin: 0;
+  font-size: 9pt;
 }
 
 .footer-title {
-  margin: 0;
-  color: var(--ink);
-  font-size: 11pt;
+  color: #555555;
   font-weight: 700;
 }
 
 .footer-note {
-  margin: 0;
-  color: #777;
-  font-size: 11pt;
+  color: #888888;
   text-align: right;
 }
 
-
 /* ==========================================================
-   22. RESPONSIVE DESIGN: TABLETS
+   ACCESSIBILITY
    ========================================================== */
 
-@media (max-width: 700pt) {
+.sr-only {
+  position: absolute;
+  width: 1pt;
+  height: 1pt;
+  padding: 0;
+  margin: -1pt;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
+/* ==========================================================
+   RESPONSIVE LAYOUT
+   ========================================================== */
+
+@media (max-width: 850pt) {
   .page {
-    padding: 16pt;
+    padding-right: 20pt;
+    padding-left: 20pt;
+  }
+
+  .topbar {
+    grid-template-columns: 130pt minmax(0, 1fr);
+    gap: 18pt;
+  }
+
+  .brand-logo {
+    width: 125pt;
+  }
+
+  .header-actions {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-note {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}
+
+@media (max-width: 600pt) {
+  .page {
+    padding-right: 14pt;
+    padding-left: 14pt;
+  }
+
+  .topbar {
+    grid-template-columns: 1fr;
+    gap: 14pt;
+  }
+
+  .brand {
+    justify-content: flex-start;
+  }
+
+  .brand-logo {
+    width: 145pt;
+  }
+
+  .header-actions {
+    grid-column: auto;
+    display: flex;
+  }
+
+  .admin-note {
+    text-align: left;
   }
 
   .profile-grid {
@@ -597,60 +612,24 @@ footer {
     font-size: 20pt;
   }
 
-  .brand-logo {
-    width: 160pt;
+  footer {
+    align-items: flex-start;
   }
-
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-box {
-    width: 100%;
-  }
-
 }
 
-
-/* ==========================================================
-   23. RESPONSIVE DESIGN: MOBILE
-   ========================================================== */
-
-@media (max-width: 420pt) {
-
-  .page {
-    padding: 10pt;
-  }
-
-  .brand-logo {
-    width: 145pt;
-  }
-
-  .profile-card {
-    padding: 12pt;
-  }
-
-  .section-list {
-    gap: 5pt;
-  }
-
-  .header-actions {
-    align-items: stretch;
+@media (max-width: 360pt) {
+  .filter-actions {
+    align-items: flex-start;
     flex-direction: column;
-  }
-
-  .header-actions .button {
-    width: 100%;
+    gap: 8pt;
   }
 
   footer {
     flex-direction: column;
-    align-items: flex-start;
+    gap: 4pt;
   }
 
   .footer-note {
     text-align: left;
   }
-
 }
