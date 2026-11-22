@@ -1,26 +1,15 @@
 
-/* ==========================================================
-   APHA GIFT MEMBERSHIP DATABASE
-   ========================================================== */
-
 :root {
   --ink: #000000;
   --muted: #777777;
   --line: #e5e9ed;
   --pale: #f3f5f7;
   --blue: #2875b8;
-  --blue-dark: #1f639e;
   --red: #b92736;
-  --green: #398451;
-  --white: #ffffff;
 }
 
 * {
   box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 body {
@@ -36,19 +25,17 @@ body {
   width: 100%;
   max-width: 1800px;
   margin: 0 auto;
-  padding: 22px 28px;
+  padding: 20px 24px;
 }
 
-/* ==========================================================
-   HEADER
-   ========================================================== */
+/* HEADER */
 
 .topbar {
   display: grid;
-  grid-template-columns: 180px minmax(0, 1fr) 260px;
+  grid-template-columns: 145px minmax(0, 1fr) 255px;
+  gap: 22px;
   align-items: start;
-  gap: 24px;
-  padding-bottom: 24px;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -56,38 +43,30 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 5px;
 }
 
 .brand-logo {
   display: block;
-  width: 100%;
-  max-width: 165px;
+  width: 125px;
+  max-width: 100%;
   height: auto;
-  object-fit: contain;
-}
-
-.intro {
-  min-width: 0;
 }
 
 .intro h1 {
-  margin: 0 0 12px;
-  color: var(--ink);
+  margin: 0 0 9px;
   font-size: 20pt;
-  font-weight: 700;
   line-height: 1.2;
+  font-weight: 700;
 }
 
 .intro p {
-  margin: 0 0 12px;
-  color: var(--ink);
+  margin: 0 0 10px;
   font-size: 11pt;
   line-height: 1.5;
 }
 
 .intro .season-note {
-  margin-top: 12px;
+  margin-top: 10px;
   font-weight: 700;
 }
 
@@ -95,188 +74,138 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 12px;
-  min-width: 0;
+  gap: 10px;
 }
 
 .admin-note {
   display: block;
-  margin-bottom: 4px;
-  color: var(--ink);
+  margin-bottom: 3px;
+  text-align: left;
   font-size: 10pt;
   line-height: 1.5;
-  text-align: center;
+  color: #555555;
 }
-
-/* ==========================================================
-   BUTTONS
-   ========================================================== */
 
 .button {
   display: block;
   width: 100%;
-  padding: 11px 13px;
-  border: 1px solid transparent;
-  border-radius: 7px;
-  color: #ffffff !important;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 10pt;
-  font-weight: 700;
-  line-height: 1.35;
+  padding: 10px 12px;
+  border-radius: 6px;
   text-align: center;
   text-decoration: none;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+  font-size: 10pt;
+  line-height: 1.35;
+  font-weight: 700;
+  transition: background-color 0.15s ease;
 }
 
 .button-blue,
 .button-blue:link,
 .button-blue:visited,
 .button-blue:active {
-  border-color: #2875b8;
-  background-color: #2875b8;
-  color: #ffffff !important;
+  background: #2875b8;
+  color: #ffffff;
 }
 
 .button-blue:hover {
-  border-color: #1f639e;
-  background-color: #1f639e;
-  color: #ffffff !important;
+  background: #1f639e;
+  color: #ffffff;
 }
 
 .button-red,
 .button-red:link,
 .button-red:visited,
 .button-red:active {
-  border-color: var(--red);
-  background-color: var(--red);
-  color: #ffffff !important;
+  background: #b92736;
+  color: #ffffff;
 }
 
 .button-red:hover {
-  border-color: #941e2b;
-  background-color: #941e2b;
-  color: #ffffff !important;
+  background: #991e2b;
+  color: #ffffff;
 }
 
-/* ==========================================================
-   MAIN DIRECTORY
-   ========================================================== */
-
-main {
-  width: 100%;
-}
+/* DIRECTORY */
 
 .directory {
-  padding-top: 22px;
+  padding-top: 20px;
 }
 
-/* ==========================================================
-   SEARCH
-   ========================================================== */
-
 .controls {
+  display: flex;
   width: 100%;
-  margin-bottom: 18px;
+  margin-bottom: 15px;
 }
 
 .search-box {
   position: relative;
-  display: flex;
-  align-items: center;
   width: 100%;
 }
 
 .search-box input {
   display: block;
   width: 100%;
-  min-height: 42px;
-  padding: 10px 42px 10px 40px;
-  border: 1px solid #cfd5db;
+  height: 42px;
+  padding: 9px 42px 9px 38px;
+  border: 1px solid #cfd6dc;
   border-radius: 7px;
-  outline: none;
   background: #ffffff;
-  color: var(--ink);
+  color: #000000;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 11pt;
 }
 
 .search-box input:focus {
+  outline: 2px solid rgba(40, 117, 184, 0.2);
   border-color: var(--blue);
-  box-shadow: 0 0 0 2px rgba(40, 117, 184, 0.12);
-}
-
-.search-box input::placeholder {
-  color: #777777;
-  opacity: 1;
 }
 
 .search-icon {
   position: absolute;
   left: 13px;
-  z-index: 1;
+  top: 50%;
+  transform: translateY(-50%);
   color: #777777;
-  font-size: 20pt;
-  line-height: 1;
+  font-size: 19pt;
   pointer-events: none;
 }
 
 #clear-search {
   position: absolute;
-  right: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  padding: 0;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   border: 0;
-  border-radius: 50%;
   background: transparent;
   color: #777777;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 18pt;
-  line-height: 1;
+  font-size: 19pt;
   cursor: pointer;
 }
 
-#clear-search:hover {
-  background: var(--pale);
-  color: var(--ink);
-}
-
-/* ==========================================================
-   FILTER PANEL
-   ========================================================== */
+/* FILTERS */
 
 .filter-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 18px;
-  padding: 17px 19px;
+  padding: 14px 16px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #ffffff;
+  background: #fafbfc;
 }
 
 .filter-panel-heading {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 15px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .filter-panel-heading h2 {
   margin: 0;
-  color: var(--ink);
-  font-size: 13pt;
-  font-weight: 700;
+  font-size: 12pt;
 }
 
 .clear-filters {
-  padding: 5px 0;
+  padding: 4px 8px;
   border: 0;
   background: transparent;
   color: var(--blue);
@@ -286,108 +215,93 @@ main {
 }
 
 .clear-filters:hover {
-  color: var(--blue-dark);
   text-decoration: underline;
 }
 
 .filter-group {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-top: 9px;
 }
 
 .filter-group h3 {
+  min-width: 105px;
   margin: 0;
-  color: var(--ink);
-  font-size: 11pt;
-  font-weight: 700;
+  font-size: 10pt;
 }
 
 .filter-options {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 9px 22px;
+  gap: 9px 18px;
 }
 
 .filter-option {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  color: var(--ink);
+  gap: 6px;
   font-size: 10pt;
   cursor: pointer;
 }
 
 .filter-option input {
-  width: 14px;
-  height: 14px;
   margin: 0;
   accent-color: var(--blue);
-  cursor: pointer;
 }
 
-/* APHA Section filter controls are intentionally omitted.
-   Section data remains searchable and visible on profile cards. */
+/* RESULT COUNT */
 
-/* ==========================================================
-   DIRECTORY RESULTS
-   ========================================================== */
-
-.directory-meta {
-  display: block !important;
-  width: 100% !important;
+#directory-meta {
+  display: block;
+  width: 100%;
   margin: 13px 0 10px;
   padding: 0;
-  color: #555555;
-  font-size: 10pt;
-  text-align: left !important;
+  text-align: left;
 }
 
 #result-count {
-  display: block !important;
-  width: 100% !important;
+  display: block;
+  width: 100%;
   margin: 0;
   padding: 0;
-  text-align: left !important;
+  color: #555555;
+  font-size: 10pt;
+  font-weight: 400;
+  text-align: left;
 }
+
+/* STATUS MESSAGE */
 
 .status-message {
-  margin: 18px 0;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: var(--pale);
-  color: var(--muted);
+  margin: 12px 0;
+  color: #555555;
   font-size: 10pt;
-  text-align: center;
 }
 
-/* ==========================================================
-   PROFILE GRID
-   ========================================================== */
+.status-message[hidden] {
+  display: none;
+}
+
+/* PROFILE GRID */
 
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
+  gap: 14px;
   align-items: stretch;
 }
-
-/* ==========================================================
-   PROFILE CARDS
-   ========================================================== */
 
 .profile-card {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   min-width: 0;
   min-height: 190px;
-  padding: 15px 15px 14px;
+  padding: 13px 13px 12px;
   border: 1px solid var(--line);
   border-left: 5px solid var(--blue);
-  border-radius: 9px;
+  border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.07);
   overflow-wrap: anywhere;
@@ -395,118 +309,120 @@ main {
 
 .profile-name {
   margin: 0 0 5px;
-  color: var(--ink);
   font-size: 12pt;
-  font-weight: 700;
   line-height: 1.3;
+  font-weight: 700;
 }
 
 .career-stage {
-  margin: 0 0 7px;
-  color: var(--ink);
+  margin: 0 0 6px;
+  color: #555555;
   font-size: 10pt;
-  font-weight: 700;
-  line-height: 1.35;
 }
 
 .email {
-  margin: 0 0 8px;
-  color: var(--muted);
+  margin: 0 0 7px;
+  color: #777777;
   font-size: 10pt;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
 }
 
 .bio {
-  margin: 0 0 11px;
-  color: var(--muted);
+  margin: 0 0 10px;
+  color: #777777;
   font-size: 10pt;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
+  line-height: 1.4;
 }
-
-/* ==========================================================
-   APHA SECTION TAGS
-   ========================================================== */
 
 .profile-tags {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
   gap: 5px;
-  width: 100%;
-  margin-top: 2px;
-  margin-bottom: 12px;
+  margin: 4px 0 12px;
 }
 
 .tag {
   display: inline-block;
-  max-width: 100%;
   padding: 3px 7px;
   border: 1px solid;
   border-radius: 5px;
   font-size: 9pt;
-  font-weight: 600;
   line-height: 1.35;
   overflow-wrap: anywhere;
 }
 
-/* ==========================================================
-   PROFILE STATUS
-   ========================================================== */
+/* PROFILE STATUS */
 
 .status {
   display: inline-block;
+  align-self: flex-start;
   margin-top: auto;
-  padding: 4px 9px;
-  border-radius: 20px;
+  padding: 3px 8px;
+  border-radius: 12px;
   font-size: 9pt;
   font-weight: 700;
-  line-height: 1.3;
 }
 
 .status.available {
-  background: #e5f3e9;
-  color: #287342;
+  background: #e4f3e8;
+  color: #28753c;
 }
 
 .status.archived {
-  background: #f8e6e8;
-  color: #a32130;
+  background: #f8e5e7;
+  color: #a32231;
 }
 
-/* ==========================================================
-   EMPTY STATE
-   ========================================================== */
+/* EMPTY STATE */
 
 .empty-state {
-  margin: 25px 0;
-  padding: 28px 18px;
-  border: 1px dashed #cfd5db;
+  margin: 24px 0;
+  padding: 25px;
+  border: 1px dashed #cfd6dc;
   border-radius: 8px;
-  background: #fafbfc;
   text-align: center;
 }
 
 .empty-state h2 {
-  margin: 0 0 8px;
-  color: var(--ink);
+  margin: 0 0 7px;
   font-size: 13pt;
 }
 
 .empty-state p {
   margin: 0;
-  color: var(--muted);
+  color: #777777;
   font-size: 10pt;
 }
 
-[hidden] {
-  display: none !important;
+.empty-state[hidden] {
+  display: none;
 }
 
-/* ==========================================================
-   ACCESSIBILITY
-   ========================================================== */
+/* FOOTER */
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.footer-title {
+  margin: 0;
+  font-size: 10pt;
+  font-weight: 400;
+}
+
+.footer-note {
+  margin: 0;
+  color: #777777;
+  font-size: 9pt;
+  text-align: right;
+}
+
+/* ACCESSIBILITY */
 
 .sr-only {
   position: absolute;
@@ -520,84 +436,22 @@ main {
   border: 0;
 }
 
-/* ==========================================================
-   FOOTER
-   ========================================================== */
+/* RESPONSIVE LAYOUT */
 
-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  margin-top: 32px;
-  padding: 16px 0 5px;
-  border-top: 1px solid var(--line);
-}
-
-.footer-title {
-  margin: 0;
-  color: var(--ink);
-  font-size: 10pt;
-  font-weight: 400;
-}
-
-.footer-note {
-  margin: 0;
-  color: var(--muted);
-  font-size: 9pt;
-  text-align: right;
-}
-
-/* ==========================================================
-   RESPONSIVE LAYOUT
-   ========================================================== */
-
-@media (max-width: 1200px) {
-  .topbar {
-    grid-template-columns: 145px minmax(0, 1fr) 230px;
-    gap: 18px;
-  }
-
-  .brand-logo {
-    max-width: 135px;
-  }
-
+@media (max-width: 1350px) {
   .profile-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 950px) {
-  .page {
-    padding: 18px 20px;
-  }
-
+@media (max-width: 1050px) {
   .topbar {
-    grid-template-columns: 125px minmax(0, 1fr);
-    gap: 18px;
+    grid-template-columns: 115px minmax(0, 1fr) 220px;
+    gap: 16px;
   }
 
-  .brand {
-    grid-row: 1;
-    grid-column: 1;
-  }
-
-  .intro {
-    grid-row: 1;
-    grid-column: 2;
-  }
-
-  .header-actions {
-    grid-row: 2;
-    grid-column: 2;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: center;
-  }
-
-  .admin-note {
-    grid-column: 1 / -1;
-    text-align: left;
+  .brand-logo {
+    width: 105px;
   }
 
   .profile-grid {
@@ -605,9 +459,9 @@ footer {
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 760px) {
   .page {
-    padding: 14px;
+    padding: 15px;
   }
 
   .topbar {
@@ -616,51 +470,24 @@ footer {
   }
 
   .brand {
-    grid-row: auto;
-    grid-column: auto;
     justify-content: flex-start;
   }
 
   .brand-logo {
-    max-width: 125px;
-  }
-
-  .intro {
-    grid-row: auto;
-    grid-column: auto;
-  }
-
-  .intro h1 {
-    font-size: 18pt;
+    width: 105px;
   }
 
   .header-actions {
-    grid-row: auto;
-    grid-column: auto;
-    display: flex;
-  }
-
-  .admin-note {
-    text-align: left;
+    max-width: 350px;
   }
 
   .profile-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 11px;
-  }
-
-  .profile-card {
-    padding: 12px;
-  }
-
-  .filter-panel {
-    padding: 14px;
   }
 
   footer {
     align-items: flex-start;
     flex-direction: column;
-    gap: 6px;
   }
 
   .footer-note {
@@ -668,18 +495,24 @@ footer {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .profile-grid {
     grid-template-columns: 1fr;
   }
 
-  .filter-panel-heading {
-    align-items: flex-start;
+  .filter-group {
+    display: block;
+  }
+
+  .filter-group h3 {
+    margin-bottom: 7px;
   }
 
   .filter-options {
-    flex-direction: column;
+    gap: 8px 12px;
+  }
+
+  .filter-panel-heading {
     align-items: flex-start;
-    gap: 9px;
   }
 }
