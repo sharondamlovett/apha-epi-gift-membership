@@ -1,7 +1,5 @@
 
-/* ==========================================================
-   APHA GIFT MEMBERSHIP DATABASE
-   ========================================================== */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6fl1803edgMMcZjeH5neqg00xEWZRQyPvigKBbJdmw2dE1KodI6vXiUCIa3SifEls/exec';
 
 const CAREER_STAGES = [
   'Student',
@@ -26,49 +24,31 @@ const SPECIAL_SECTION_COLORS = {
   'Maternal and Child Health (MCH)': '#d66b91'
 };
 
-/* ==========================================================
-   HTML ELEMENTS
-   ========================================================== */
-
 const memberGrid = document.getElementById('member-grid');
 const directoryStatus = document.getElementById('directory-status');
 const resultCount = document.getElementById('result-count');
 const emptyState = document.getElementById('empty-state');
 const searchInput = document.getElementById('search');
 
-const careerStageFilters =
-  document.getElementById('career-stage-filters');
+const careerStageFilters = document.getElementById('career-stage-filters');
+const statusFilters = document.getElementById('status-filters');
 
-const statusFilters =
-  document.getElementById('status-filters');
-
-const clearSearchButton =
-  document.getElementById('clear-search');
-
-const clearFiltersButton =
-  document.getElementById('clear-filters');
-
-/* ==========================================================
-   PROFILE DATA AND FILTER STATE
-   ========================================================== */
+const clearSearchButton = document.getElementById('clear-search');
+const clearFiltersButton = document.getElementById('clear-filters');
 
 let profiles = [];
 
 const selectedCareerStages = new Set();
 const selectedStatuses = new Set();
 
-/* ==========================================================
-   GENERAL HELPERS
-   ========================================================== */
-
 function normalizeValue(value) {
   return String(value || '').trim().toLowerCase();
 }
 
 function getValidProfileSections(profile) {
-  return [profile.section1, profile.section2].filter(section => {
-    return section && normalizeValue(section) !== 'other';
-  });
+  return [profile.section1, profile.section2].filter(section =>
+    section && normalizeValue(section) !== 'other'
+  );
 }
 
 function getSectionColor(section) {
@@ -108,15 +88,9 @@ function getProfileStatus(profile) {
 
 function getCareerStage(profile) {
   return String(
-    profile.career_stage ||
-    profile.careerStage ||
-    ''
+    profile.career_stage || profile.careerStage || ''
   ).trim();
 }
-
-/* ==========================================================
-   FILTER CREATION
-   ========================================================== */
 
 function makeCheckboxFilter(container, value, group) {
   const label = document.createElement('label');
@@ -141,7 +115,6 @@ function makeCheckboxFilter(container, value, group) {
 
   label.appendChild(checkbox);
   label.appendChild(text);
-
   container.appendChild(label);
 }
 
@@ -169,25 +142,17 @@ function makeStatusFilters() {
   });
 }
 
-/* ==========================================================
-   FILTER STATE
-   ========================================================== */
-
 function renderFilters() {
   document.querySelectorAll(
     '#career-stage-filters input[type="checkbox"]'
   ).forEach(checkbox => {
-    checkbox.checked = selectedCareerStages.has(
-      checkbox.value
-    );
+    checkbox.checked = selectedCareerStages.has(checkbox.value);
   });
 
   document.querySelectorAll(
     '#status-filters input[type="checkbox"]'
   ).forEach(checkbox => {
-    checkbox.checked = selectedStatuses.has(
-      checkbox.value
-    );
+    checkbox.checked = selectedStatuses.has(checkbox.value);
   });
 }
 
@@ -201,22 +166,14 @@ function clearAllFilters() {
   renderProfiles();
 }
 
-/* ==========================================================
-   SEARCH
-   ========================================================== */
-
 function formatEmail(email) {
-  if (!email) {
-    return '';
-  }
+  if (!email) return '';
 
   return String(email).replace(/\s*@\s*/g, ' [at] ');
 }
 
 function matchesSearch(profile, query) {
-  if (!query) {
-    return true;
-  }
+  if (!query) return true;
 
   const searchableText = [
     profile.full_name,
@@ -233,42 +190,28 @@ function matchesSearch(profile, query) {
   return searchableText.includes(query.toLowerCase());
 }
 
-/* ==========================================================
-   FILTER MATCHING
-   ========================================================== */
-
 function matchesCareerStage(profile) {
-  if (selectedCareerStages.size === 0) {
-    return true;
-  }
+  if (selectedCareerStages.size === 0) return true;
 
-  return selectedCareerStages.has(
-    getCareerStage(profile)
-  );
+  return selectedCareerStages.has(getCareerStage(profile));
 }
 
 function matchesStatus(profile) {
-  if (selectedStatuses.size === 0) {
-    return true;
-  }
+  if (selectedStatuses.size === 0) return true;
 
-  return selectedStatuses.has(
-    getProfileStatus(profile)
-  );
+  return selectedStatuses.has(getProfileStatus(profile));
 }
-
-/* ==========================================================
-   PROFILE TAGS AND CARDS
-   ========================================================== */
 
 function makeTag(section) {
   const tag = document.createElement('span');
+
   tag.className = 'tag';
 
   const color = getSectionColor(section);
 
   tag.textContent = section;
   tag.title = section;
+
   tag.style.color = color;
   tag.style.borderColor = color;
   tag.style.backgroundColor = getTransparentColor(color);
@@ -278,6 +221,7 @@ function makeTag(section) {
 
 function makeProfileCard(profile) {
   const card = document.createElement('article');
+
   card.className = 'profile-card';
 
   const profileSections = getValidProfileSections(profile);
@@ -289,35 +233,44 @@ function makeProfileCard(profile) {
   card.style.borderLeftColor = firstSectionColor;
 
   const name = document.createElement('h2');
+
   name.className = 'profile-name';
   name.textContent = profile.full_name || 'Name unavailable';
+
   card.appendChild(name);
 
   const careerStage = getCareerStage(profile);
 
   if (careerStage) {
     const stage = document.createElement('p');
+
     stage.className = 'career-stage';
     stage.textContent = careerStage;
+
     card.appendChild(stage);
   }
 
   if (profile.email) {
     const email = document.createElement('p');
+
     email.className = 'email';
     email.textContent = formatEmail(profile.email);
+
     card.appendChild(email);
   }
 
   if (profile.bio) {
     const bio = document.createElement('p');
+
     bio.className = 'bio';
     bio.textContent = profile.bio;
+
     card.appendChild(bio);
   }
 
   if (profileSections.length > 0) {
     const tags = document.createElement('div');
+
     tags.className = 'profile-tags';
 
     profileSections.forEach(section => {
@@ -330,6 +283,7 @@ function makeProfileCard(profile) {
   const statusText = getProfileStatus(profile);
 
   const status = document.createElement('span');
+
   status.className = `status ${statusText.toLowerCase()}`;
   status.textContent = statusText;
 
@@ -338,30 +292,39 @@ function makeProfileCard(profile) {
   return card;
 }
 
-/* ==========================================================
-   PROFILE RENDERING
-   ========================================================== */
+function sortProfilesAlphabetically(profileList) {
+  return profileList.sort((a, b) => {
+    const nameA = String(a.full_name || '').trim();
+    const nameB = String(b.full_name || '').trim();
+
+    const isSharondaA =
+      nameA.toLowerCase() === 'sharonda lovett';
+
+    const isSharondaB =
+      nameB.toLowerCase() === 'sharonda lovett';
+
+    if (isSharondaA && isSharondaB) return 0;
+    if (isSharondaA) return -1;
+    if (isSharondaB) return 1;
+
+    return nameA.localeCompare(
+      nameB,
+      undefined,
+      { sensitivity: 'base' }
+    );
+  });
+}
 
 function renderProfiles() {
   const query = searchInput.value.trim();
 
-const filteredProfiles = profiles
-  .filter(profile =>
+  const filteredProfiles = profiles.filter(profile =>
     matchesSearch(profile, query) &&
     matchesCareerStage(profile) &&
     matchesStatus(profile)
-  )
-  .sort((a, b) => {
-    const nameA = (a.full_name || '').trim();
-    const nameB = (b.full_name || '').trim();
+  );
 
-    // Keep Sharonda Lovett at the top
-    if (nameA.toLowerCase() === 'sharonda lovett') return -1;
-    if (nameB.toLowerCase() === 'sharonda lovett') return 1;
-
-    // Sort all other profiles alphabetically A-Z
-    return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
-  });
+  sortProfilesAlphabetically(filteredProfiles);
 
   memberGrid.innerHTML = '';
 
@@ -379,86 +342,100 @@ const filteredProfiles = profiles
   directoryStatus.hidden = true;
 }
 
-/* ==========================================================
-   LOAD PROFILE DATA
-   ========================================================== */
+function handleProfilesResponse(data) {
+  if (!Array.isArray(data)) {
+    if (data && data.error) {
+      throw new Error(data.message || 'Unable to retrieve profiles.');
+    }
 
-async function loadProfiles() {
-  try {
+    throw new Error('The spreadsheet returned an unexpected response.');
+  }
+
+  profiles = data.filter(profile =>
+    profile &&
+    profile.full_name &&
+    String(profile.full_name).trim() !== ''
+  );
+
+  makeCareerStageFilters();
+  makeStatusFilters();
+
+  renderFilters();
+  renderProfiles();
+
+  if (profiles.length === 0) {
     directoryStatus.hidden = false;
-    directoryStatus.textContent = 'Loading approved profiles…';
+    directoryStatus.textContent =
+      'No approved profiles are currently available.';
+  }
+}
 
-    const response = await fetch('assets/profiles.json', {
-      cache: 'no-store'
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Unable to load profiles (${response.status}).`
-      );
+function loadProfiles() {
+  try {
+    if (
+      !APPS_SCRIPT_URL ||
+      APPS_SCRIPT_URL === 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE'
+    ) {
+      throw new Error('The Google Apps Script URL has not been added.');
     }
 
-    const data = await response.json();
+    directoryStatus.hidden = false;
+    directoryStatus.textContent =
+      'Connecting to the APHA profile database…';
 
-    if (!Array.isArray(data)) {
-      throw new Error(
-        'The profiles file must contain a JSON array.'
-      );
-    }
+    resultCount.textContent = 'Loading profiles…';
 
-    profiles = data.filter(profile => {
-      return (
-        profile &&
-        profile.full_name &&
-        String(profile.full_name).trim() !== ''
-      );
-    });
+    // JSONP allows the GitHub Pages website to retrieve
+    // approved public fields without exposing the spreadsheet.
+    window.handleProfilesResponse = function(data) {
+      try {
+        handleProfilesResponse(data);
+      } catch (error) {
+        console.error('Profile processing error:', error);
 
-    console.log('Profiles loaded from JSON:', data);
-    console.log('Profiles accepted for display:', profiles);
+        directoryStatus.hidden = false;
+        directoryStatus.textContent =
+          'Unable to process profile information. Please contact the database administrator.';
 
-    makeCareerStageFilters();
-    makeStatusFilters();
+        resultCount.textContent = 'Profiles unavailable';
+      }
+    };
 
-    renderFilters();
-    renderProfiles();
+    const script = document.createElement('script');
 
-    if (profiles.length === 0) {
+    script.src =
+      `${APPS_SCRIPT_URL}?callback=handleProfilesResponse&_=${Date.now()}`;
+
+    script.onerror = function() {
       directoryStatus.hidden = false;
+
       directoryStatus.textContent =
-        'No approved profiles are currently available.';
-    }
+        'Unable to connect to the profile database. Please refresh the page or try again later.';
+
+      resultCount.textContent = 'Profiles unavailable';
+    };
+
+    document.body.appendChild(script);
 
   } catch (error) {
     console.error('Profile loading error:', error);
 
     directoryStatus.hidden = false;
-    directoryStatus.textContent =
-      'Unable to load profiles. Please refresh the page or try again later.';
+    directoryStatus.textContent = error.message;
 
     resultCount.textContent = 'Profiles unavailable';
   }
 }
 
-/* ==========================================================
-   EVENT LISTENERS
-   ========================================================== */
-
 searchInput.addEventListener('input', renderProfiles);
 
 clearSearchButton.addEventListener('click', () => {
   searchInput.value = '';
+
   renderProfiles();
   searchInput.focus();
 });
 
-clearFiltersButton.addEventListener(
-  'click',
-  clearAllFilters
-);
-
-/* ==========================================================
-   INITIALIZE
-   ========================================================== */
+clearFiltersButton.addEventListener('click', clearAllFilters);
 
 loadProfiles();
