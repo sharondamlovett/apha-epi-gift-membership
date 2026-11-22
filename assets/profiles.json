@@ -1,1 +1,26 @@
-[]
+[
+    {
+    "full_name": "Sharonda Lovett",
+    "email": "jane.smith@example.org",
+    "bio": "Epidemiologist with expertise in reproductive and environmental health.",
+    "section1": "Epidemiology (EPI)",
+    "section2": "Environment (ENV)",
+    "status": "Available"
+  },
+    {
+    "full_name": "John Doe",
+    "email": "john_joe[at]gmail.com",
+    "bio": "Clinician",
+    "section1": "Sexual and Reproductive Health (SRH)",
+    "section2": "Environment (ENV)",
+    "status": "Archived"
+  },
+    {
+    "full_name": "Jane Smith",
+    "email": "jane_smith[at]gmail.com",
+    "bio": "Policymaker for community-based research.",
+    "section1": "Law (LAW)",
+    "section2": "Community Health Worksers (CHW)",
+    "status": "Available"
+  }
+]
