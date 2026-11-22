@@ -134,8 +134,8 @@ function renderProfiles() {
     const name = document.createElement("h2"); name.textContent = person.full_name;
     const tags = document.createElement("div"); tags.className = "tags";
     tags.append(makeTag(firstSection), makeTag(person.section2 || "Other"));
-    const email = document.createElement("a"); email.className = "member-email";
-    email.href = `mailto:${person.email}`; email.textContent = person.email;
+    const email = document.createElement("span"); email.className = "member-email";
+    email.textContent = person.email;
     const bio = document.createElement("p"); bio.className = "member-bio"; bio.textContent = person.bio;
     const status = makeTag(person.status === "Archived" ? "Archived" : "Available", true);
     if (person.status === "Archived") status.classList.add("archived");
