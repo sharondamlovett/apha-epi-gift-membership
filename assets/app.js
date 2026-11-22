@@ -1,3 +1,4 @@
+
 /* ==========================================================
    APHA GIFT MEMBERSHIP DATABASE
    ========================================================== */
@@ -25,17 +26,31 @@ const SPECIAL_SECTION_COLORS = {
   'Maternal and Child Health (MCH)': '#d66b91'
 };
 
+/* ==========================================================
+   HTML ELEMENTS
+   ========================================================== */
+
 const memberGrid = document.getElementById('member-grid');
 const directoryStatus = document.getElementById('directory-status');
 const resultCount = document.getElementById('result-count');
 const emptyState = document.getElementById('empty-state');
 const searchInput = document.getElementById('search');
 
-const careerStageFilters = document.getElementById('career-stage-filters');
-const statusFilters = document.getElementById('status-filters');
+const careerStageFilters =
+  document.getElementById('career-stage-filters');
 
-const clearSearchButton = document.getElementById('clear-search');
-const clearFiltersButton = document.getElementById('clear-filters');
+const statusFilters =
+  document.getElementById('status-filters');
+
+const clearSearchButton =
+  document.getElementById('clear-search');
+
+const clearFiltersButton =
+  document.getElementById('clear-filters');
+
+/* ==========================================================
+   PROFILE DATA AND FILTER STATE
+   ========================================================== */
 
 let profiles = [];
 
@@ -68,7 +83,9 @@ function getSectionColor(section) {
     hash |= 0;
   }
 
-  return SECTION_PALETTE[Math.abs(hash) % SECTION_PALETTE.length];
+  return SECTION_PALETTE[
+    Math.abs(hash) % SECTION_PALETTE.length
+  ];
 }
 
 function getTransparentColor(hex) {
@@ -124,6 +141,7 @@ function makeCheckboxFilter(container, value, group) {
 
   label.appendChild(checkbox);
   label.appendChild(text);
+
   container.appendChild(label);
 }
 
@@ -159,13 +177,17 @@ function renderFilters() {
   document.querySelectorAll(
     '#career-stage-filters input[type="checkbox"]'
   ).forEach(checkbox => {
-    checkbox.checked = selectedCareerStages.has(checkbox.value);
+    checkbox.checked = selectedCareerStages.has(
+      checkbox.value
+    );
   });
 
   document.querySelectorAll(
     '#status-filters input[type="checkbox"]'
   ).forEach(checkbox => {
-    checkbox.checked = selectedStatuses.has(checkbox.value);
+    checkbox.checked = selectedStatuses.has(
+      checkbox.value
+    );
   });
 }
 
@@ -220,7 +242,9 @@ function matchesCareerStage(profile) {
     return true;
   }
 
-  return selectedCareerStages.has(getCareerStage(profile));
+  return selectedCareerStages.has(
+    getCareerStage(profile)
+  );
 }
 
 function matchesStatus(profile) {
@@ -228,7 +252,9 @@ function matchesStatus(profile) {
     return true;
   }
 
-  return selectedStatuses.has(getProfileStatus(profile));
+  return selectedStatuses.has(
+    getProfileStatus(profile)
+  );
 }
 
 /* ==========================================================
@@ -302,10 +328,11 @@ function makeProfileCard(profile) {
   }
 
   const statusText = getProfileStatus(profile);
-  const status = document.createElement('span');
 
+  const status = document.createElement('span');
   status.className = `status ${statusText.toLowerCase()}`;
   status.textContent = statusText;
+
   card.appendChild(status);
 
   return card;
@@ -372,9 +399,13 @@ async function loadProfiles() {
     profiles = data.filter(profile => {
       return (
         profile &&
-        profile.full_name
+        profile.full_name &&
+        String(profile.full_name).trim() !== ''
       );
     });
+
+    console.log('Profiles loaded from JSON:', data);
+    console.log('Profiles accepted for display:', profiles);
 
     makeCareerStageFilters();
     makeStatusFilters();
