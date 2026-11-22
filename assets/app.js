@@ -345,12 +345,22 @@ function makeProfileCard(profile) {
 function renderProfiles() {
   const query = searchInput.value.trim();
 
-  const filteredProfiles = profiles.filter(profile => {
-    return (
-      matchesSearch(profile, query) &&
-      matchesCareerStage(profile) &&
-      matchesStatus(profile)
-    );
+const filteredProfiles = profiles
+  .filter(profile =>
+    matchesSearch(profile, query) &&
+    matchesCareerStage(profile) &&
+    matchesStatus(profile)
+  )
+  .sort((a, b) => {
+    const nameA = (a.full_name || '').trim();
+    const nameB = (b.full_name || '').trim();
+
+    // Keep Sharonda Lovett at the top
+    if (nameA.toLowerCase() === 'sharonda lovett') return -1;
+    if (nameB.toLowerCase() === 'sharonda lovett') return 1;
+
+    // Sort all other profiles alphabetically A-Z
+    return nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
   });
 
   memberGrid.innerHTML = '';
