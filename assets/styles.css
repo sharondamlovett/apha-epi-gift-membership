@@ -1,4 +1,14 @@
 
+/* ==========================================================
+   APHA GIFT MEMBERSHIP DATABASE
+   COMPLETE STYLESHEET
+   ========================================================== */
+
+
+/* ==========================================================
+   1. GLOBAL SETTINGS
+   ========================================================== */
+
 :root {
   --ink: #000;
   --muted: #000;
@@ -37,8 +47,9 @@ button {
   cursor: pointer;
 }
 
+
 /* ==========================================================
-   PAGE LAYOUT
+   2. PAGE LAYOUT
    ========================================================== */
 
 .page {
@@ -54,9 +65,15 @@ footer {
   width: 100%;
 }
 
+
 /* ==========================================================
-   HEADER AND APHA BRANDING
+   3. HEADER AND APHA BRANDING
    ========================================================== */
+
+.topbar {
+  width: 100%;
+  margin-bottom: 22pt;
+}
 
 .brand {
   display: flex;
@@ -78,12 +95,13 @@ footer {
   line-height: 1.3;
 }
 
+
 /* ==========================================================
-   INTRODUCTION
+   4. INTRODUCTION
    ========================================================== */
 
 .intro {
-  margin-bottom: 22pt;
+  margin-bottom: 18pt;
 }
 
 .intro h1 {
@@ -98,6 +116,7 @@ footer {
   margin: 0 0 10pt;
   color: var(--ink);
   font-size: 11pt;
+  line-height: 1.5;
 }
 
 .intro a {
@@ -105,8 +124,35 @@ footer {
   text-decoration: underline;
 }
 
+.season-note {
+  margin-top: 10pt;
+  font-size: 11pt;
+  font-weight: 700;
+}
+
+
 /* ==========================================================
-   GENERAL LINKS AND BUTTONS
+   5. HEADER ACTIONS
+   ========================================================== */
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10pt;
+  margin-top: 14pt;
+}
+
+.admin-note {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--ink);
+  font-size: 11pt;
+}
+
+
+/* ==========================================================
+   6. LINKS AND BUTTONS
    ========================================================== */
 
 a {
@@ -125,6 +171,7 @@ button,
   background: #fff;
   color: var(--ink);
   font-size: 11pt;
+  text-decoration: none;
 }
 
 button:hover,
@@ -132,8 +179,41 @@ button:hover,
   background: var(--pale);
 }
 
+.button {
+  display: inline-block;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.button-muted {
+  border-color: var(--line);
+  background: var(--pale);
+  color: var(--ink);
+}
+
+.button-red {
+  border-color: var(--red);
+  background: var(--red);
+  color: #fff;
+}
+
+.button-red:hover {
+  background: #941e2b;
+  color: #fff;
+}
+
+
 /* ==========================================================
-   SEARCH AND FILTER CONTROLS
+   7. MAIN DIRECTORY
+   ========================================================== */
+
+.directory {
+  width: 100%;
+}
+
+
+/* ==========================================================
+   8. SEARCH CONTROLS
    ========================================================== */
 
 .controls {
@@ -164,8 +244,9 @@ button:hover,
   opacity: 1;
 }
 
+
 /* ==========================================================
-   SECTION FILTER AREA
+   9. SECTION FILTER PANEL
    ========================================================== */
 
 .section-filter {
@@ -182,6 +263,17 @@ button:hover,
   font-size: 11pt;
   font-weight: 700;
 }
+
+.section-filter p {
+  margin: 0 0 10pt;
+  color: var(--ink);
+  font-size: 11pt;
+}
+
+
+/* ==========================================================
+   10. SECTION FILTER BUTTONS
+   ========================================================== */
 
 .section-list {
   display: flex;
@@ -213,8 +305,93 @@ button:hover,
   color: #fff;
 }
 
+.section-chip[aria-pressed="true"] {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: #fff;
+}
+
+
 /* ==========================================================
-   PROFILE GRID
+   11. SECTION FILTER ACTIONS
+   ========================================================== */
+
+.section-filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8pt;
+  margin-top: 10pt;
+}
+
+.section-filter-actions button {
+  padding: 6pt 10pt;
+  font-size: 11pt;
+}
+
+
+/* ==========================================================
+   12. COMPLETE SECTION FILTER LIST
+   ========================================================== */
+
+.more-filters {
+  margin-bottom: 18pt;
+}
+
+.more-filters[hidden] {
+  display: none;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 6pt;
+  padding: 5pt 7pt;
+  border: 1pt solid var(--line);
+  border-radius: 4pt;
+  background: #fff;
+  color: var(--ink);
+  font-size: 11pt;
+  cursor: pointer;
+}
+
+.filter-option input {
+  width: 11pt;
+  height: 11pt;
+  margin: 0;
+  cursor: pointer;
+}
+
+.filter-swatch {
+  display: inline-block;
+  width: 10pt;
+  height: 10pt;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.filter-empty-note {
+  color: var(--muted);
+  font-size: 11pt;
+}
+
+
+/* ==========================================================
+   13. DIRECTORY RESULTS COUNT
+   ========================================================== */
+
+.results-count {
+  margin: 0 0 12pt;
+  color: var(--ink);
+  font-size: 11pt;
+}
+
+.directory-meta {
+  margin-bottom: 12pt;
+}
+
+
+/* ==========================================================
+   14. PROFILE GRID
    ========================================================== */
 
 .profile-grid {
@@ -223,8 +400,9 @@ button:hover,
   gap: 14pt;
 }
 
+
 /* ==========================================================
-   PROFILE CARDS
+   15. PROFILE CARDS
    ========================================================== */
 
 .profile-card {
@@ -252,19 +430,9 @@ button:hover,
   line-height: 1.45;
 }
 
-.profile-card .email {
-  color: var(--ink);
-  font-size: 11pt;
-}
-
-.profile-card .bio {
-  margin-top: 9pt;
-  color: var(--ink);
-  font-size: 11pt;
-}
 
 /* ==========================================================
-   SECTION TAGS ON PROFILE CARDS
+   16. PROFILE SECTION TAGS
    ========================================================== */
 
 .profile-tags {
@@ -285,8 +453,29 @@ button:hover,
   line-height: 1.2;
 }
 
+
 /* ==========================================================
-   PROFILE STATUS
+   17. PROFILE EMAIL AND BIOGRAPHY
+   ========================================================== */
+
+.email {
+  display: block;
+  margin: 6pt 0;
+  color: var(--ink);
+  font-size: 11pt;
+  overflow-wrap: anywhere;
+}
+
+.bio {
+  margin-top: 9pt;
+  color: var(--ink);
+  font-size: 11pt;
+  line-height: 1.45;
+}
+
+
+/* ==========================================================
+   18. PROFILE STATUS
    ========================================================== */
 
 .status {
@@ -297,6 +486,7 @@ button:hover,
   border-radius: 12pt;
   color: var(--ink);
   font-size: 11pt;
+  line-height: 1.2;
 }
 
 .status.available {
@@ -311,15 +501,10 @@ button:hover,
   color: #555;
 }
 
-/* ==========================================================
-   RESULTS AND EMPTY STATES
-   ========================================================== */
 
-.results-count {
-  margin: 0 0 12pt;
-  color: var(--ink);
-  font-size: 11pt;
-}
+/* ==========================================================
+   19. LOADING AND EMPTY STATES
+   ========================================================== */
 
 .empty-state {
   padding: 20pt;
@@ -331,11 +516,42 @@ button:hover,
   text-align: center;
 }
 
+.empty-state h2 {
+  margin: 0 0 8pt;
+  color: var(--ink);
+  font-size: 13pt;
+}
+
+.empty-state p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 11pt;
+}
+
+.empty-state[hidden] {
+  display: none;
+}
+
+.status-message {
+  margin-bottom: 12pt;
+  padding: 12pt;
+  border: 1pt solid var(--line);
+  border-radius: 5pt;
+  background: var(--pale);
+  color: var(--ink);
+  font-size: 11pt;
+}
+
+
 /* ==========================================================
-   FOOTER
+   20. FOOTER
    ========================================================== */
 
 footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8pt;
   margin-top: 30pt;
   padding-top: 12pt;
   border-top: 1pt solid var(--line);
@@ -344,23 +560,38 @@ footer {
   line-height: 1.5;
 }
 
-.footer-note {
-  margin: 0 0 5pt;
-  color: var(--ink);
-  font-size: 11pt;
-}
-
-.admin-note {
+footer p {
   margin: 0;
   color: var(--ink);
   font-size: 11pt;
 }
 
+
 /* ==========================================================
-   RESPONSIVE DESIGN
+   21. FOOTER TEXT - INDEPENDENT FONT CONTROLS
+   ========================================================== */
+
+/* Database creation date */
+
+.footer-note {
+  margin: 0;
+  color: var(--ink);
+  font-size: 11pt;
+}
+
+/* Database manager name */
+
+.admin-note {
+  font-size: 11pt;
+}
+
+
+/* ==========================================================
+   22. RESPONSIVE DESIGN: TABLETS
    ========================================================== */
 
 @media (max-width: 700pt) {
+
   .page {
     padding: 16pt;
   }
@@ -385,9 +616,16 @@ footer {
   .search-box {
     width: 100%;
   }
+
 }
 
+
+/* ==========================================================
+   23. RESPONSIVE DESIGN: MOBILE
+   ========================================================== */
+
 @media (max-width: 420pt) {
+
   .page {
     padding: 10pt;
   }
@@ -407,5 +645,19 @@ footer {
   .section-list {
     gap: 5pt;
   }
-}
 
+  .header-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .header-actions .button {
+    width: 100%;
+  }
+
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
