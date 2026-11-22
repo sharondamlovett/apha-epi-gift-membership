@@ -1,7 +1,6 @@
 # APHA Gift Membership Database
-# Managed by Dr. Sharonda Lovett
 
-A responsive, searchable GitHub Pages directory for APHA members seeking a sponsor for a one-year membership waiver. The site is inspired by the linked ISEE resource menu and uses Google Forms for private submissions—no Supabase or separate database account is required.
+Managed by Dr. Sharonda Lovett, this A responsive, searchable GitHub Pages directory for APHA members seeking a sponsor for a one-year membership waiver. The site is inspired by the linked ISEE resource menu and uses Google Forms for private submissions—no Supabase or separate database account is required.
 
 ## How it works
 
