@@ -1,6 +1,7 @@
 # APHA Gift Membership Database
 
-A searchable static database hosted on GitHub Pages. The public database displays only profiles that the administrator manually adds to `assets/profiles.json` after reviewing the Google Form response and confirming consent.
+Created and managed by Dr. Sharonda Lovett at sharonda.lovett.apha [at] gmail.com
+ searchable static database hosted on GitHub Pages. The public database displays only profiles that the administrator manually adds to `assets/profiles.json` after reviewing the Google Form response and confirming consent.
 
 ## Links
 - Submission form: https://forms.gle/DpoUy8tkKuhgpYQf6
