@@ -6,6 +6,7 @@
   --pale: #f5f7f9;
   --blue: #2875b8;
   --red: #b92736;
+  --green: #347449;
   --card-shadow: 0 3pt 12pt rgba(0, 0, 0, 0.07);
 }
 
@@ -211,120 +212,80 @@ body {
 }
 
 /* ==========================================================
-   APHA SECTION FILTERS
+   FILTER PANEL
    ========================================================== */
 
-.section-filter {
-  margin-bottom: 12pt;
-  padding: 13pt 15pt;
+.filter-panel {
+  margin-bottom: 14pt;
+  padding: 15pt;
   border: 1pt solid var(--line);
   border-radius: 8pt;
   background: #fafbfc;
 }
 
-.filter-label {
-  margin-bottom: 9pt;
-  color: #555555;
-  font-size: 9pt;
-  font-weight: 700;
-  letter-spacing: 0.7pt;
-}
-
-.section-list {
+.filter-panel-heading {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6pt;
-}
-
-.section-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 23pt;
-  padding: 4pt 9pt;
-  border: 1pt solid #d7dfe5;
-  border-radius: 20pt;
-  background: #ffffff;
-  color: #444444;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 9pt;
-  line-height: 1.3;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
-}
-
-.section-chip:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-}
-
-.section-chip.active {
-  border-color: var(--blue);
-  background: #eaf3fa;
-  color: #174f79;
-  font-weight: 700;
-}
-
-.filter-actions {
-  display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
   gap: 12pt;
-  margin-top: 11pt;
+  margin-bottom: 13pt;
 }
 
-.browse-button,
+.filter-panel-heading h2 {
+  margin: 0;
+  color: #333333;
+  font-size: 12pt;
+  font-weight: 700;
+}
+
 .clear-filters {
   padding: 0;
   border: 0;
   background: transparent;
+  color: #888888;
   cursor: pointer;
   font-family: inherit;
   font-size: 9pt;
   font-weight: 700;
 }
 
-.browse-button {
-  color: var(--blue);
-}
-
-.browse-button:hover {
+.clear-filters:hover {
+  color: var(--red);
   text-decoration: underline;
 }
 
-.clear-filters {
-  color: #888888;
+/* ==========================================================
+   INDIVIDUAL FILTER GROUPS
+   ========================================================== */
+
+.filter-group {
+  padding: 11pt 0;
+  border-top: 1pt solid #e7eaed;
 }
 
-.clear-filters:hover {
-  color: var(--red);
+.filter-group h3 {
+  margin: 0 0 9pt;
+  color: #555555;
+  font-size: 10pt;
+  font-weight: 700;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7pt;
 }
 
 /* ==========================================================
-   COMPLETE SECTION BROWSER
-   Three alphabetical columns
+   APHA SECTION FILTER
+   Three columns, filled vertically by JavaScript
    ========================================================== */
 
-.more-filters {
-  margin: 10pt 0 15pt;
-  padding: 15pt;
-  border: 1pt solid var(--line);
-  border-radius: 8pt;
-  background: #ffffff;
-}
-
-.more-filters p {
-  margin: 0 0 12pt;
-  color: #666666;
-  font-size: 10pt;
-}
-
-.all-section-filters {
+.section-list {
   display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
   gap: 7pt 12pt;
@@ -371,7 +332,7 @@ body {
 }
 
 /* ==========================================================
-   RESULTS
+   RESULTS COUNT
    ========================================================== */
 
 .directory-meta {
@@ -391,7 +352,6 @@ body {
 
 /* ==========================================================
    PROFILE GRID
-   Five columns on wide screens
    ========================================================== */
 
 .profile-grid {
@@ -435,6 +395,10 @@ body {
   overflow-wrap: anywhere;
 }
 
+/* ==========================================================
+   FULL SECTION TAGS
+   ========================================================== */
+
 .profile-tags {
   display: flex;
   flex-wrap: wrap;
@@ -455,6 +419,18 @@ body {
   overflow-wrap: anywhere;
 }
 
+/* ==========================================================
+   CAREER STAGE, EMAIL AND BIO
+   ========================================================== */
+
+.career-stage {
+  margin: 0 0 7pt;
+  color: #555555;
+  font-size: 9pt;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
 .email {
   margin: 0 0 7pt;
   color: #777777;
@@ -471,26 +447,37 @@ body {
   overflow-wrap: anywhere;
 }
 
+/* ==========================================================
+   PROFILE STATUS LABELS
+   ========================================================== */
+
 .status {
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
   gap: 5pt;
   margin-top: auto;
-  padding: 4pt 8pt;
+  padding: 4pt 9pt;
+  border: 1pt solid transparent;
   border-radius: 20pt;
   font-size: 8pt;
   font-weight: 700;
 }
 
+/* Available: green */
+
 .status.available {
+  border-color: #347449;
   background: #eaf5ed;
   color: #347449;
 }
 
+/* Archived: red */
+
 .status.archived {
-  background: #f0f1f2;
-  color: #777777;
+  border-color: #b92736;
+  background: #fbeaec;
+  color: #b92736;
 }
 
 /* ==========================================================
@@ -569,7 +556,7 @@ footer {
    RESPONSIVE LAYOUT
    ========================================================== */
 
-/* Medium desktop and smaller laptops */
+/* Medium desktop */
 
 @media (max-width: 1050pt) {
   .profile-grid {
@@ -614,7 +601,7 @@ footer {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .all-section-filters {
+  .section-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -657,12 +644,8 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .all-section-filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  footer {
-    align-items: flex-start;
+  .section-list {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -673,18 +656,18 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .all-section-filters {
-    grid-template-columns: 1fr;
+  .filter-panel-heading {
+    align-items: flex-start;
   }
 
-  .filter-actions {
+  .filter-options {
     align-items: flex-start;
     flex-direction: column;
-    gap: 8pt;
   }
 
   footer {
     flex-direction: column;
+    align-items: flex-start;
     gap: 4pt;
   }
 
