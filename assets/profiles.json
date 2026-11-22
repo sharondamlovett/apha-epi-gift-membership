@@ -1,18 +1,20 @@
 [
     {
     "full_name": "Sharonda Lovett",
-    "email": "slovett1[at]bu.edu",
+    "email": "slovett1@bu.edu",
     "bio": "Epidemiologist with expertise in reproductive and environmental health.",
     "section1": "Epidemiology (EPI)",
     "section2": "Environment (ENV)",
+    "career_stage": "Early Career Professional",
     "status": "Available"
   },
     {
     "full_name": "John Doe",
     "email": "john_joe[at]gmail.com",
     "bio": "Clinician",
-    "section1": "Sexual and Reproductive Health (SRH)",
-    "section2": "Environment (ENV)",
+    "section1": "Maternal and Child Health (MCH)",
+    "section2": "Sexual and Reproductive Health (SRH)",
+    "career_stage": "Early Career Professional",
     "status": "Archived"
   },
     {
@@ -21,6 +23,7 @@
     "bio": "Policymaker for community-based research.",
     "section1": "Law (LAW)",
     "section2": "Community Health Workers (CHW)",
+    "career_stage": "Student",
     "status": "Available"
   }
 ]
