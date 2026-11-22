@@ -1,3 +1,14 @@
+
+/* ==========================================================
+   APHA GIFT MEMBERSHIP DATABASE
+   APPLICATION JAVASCRIPT
+   ========================================================== */
+
+
+/* ==========================================================
+   1. APHA SECTIONS
+   ========================================================== */
+
 const SECTIONS = [
   'Aging and Public Health (APH)',
   'Alcohol, Tobacco, and Other Drugs (ATOD)',
@@ -34,133 +45,609 @@ const SECTIONS = [
   'Sexual and Reproductive Health (SRH)',
   'Vision Care (VC)'
 ];
-const PALETTE = ["#287e8b", "#76518e", "#9b455c", "#8a6b25", "#805b38", "#357f8a", "#426f9d", "#a05a35", "#537b51", "#6e5d9c", "#a14e70", "#527c83"];
+
+
+/* ==========================================================
+   2. SECTION COLOR PALETTE
+   ========================================================== */
+
+const PALETTE = [
+  "#287e8b",
+  "#76518e",
+  "#9b455c",
+  "#8a6b25",
+  "#805b38",
+  "#357f8a",
+  "#426f9d",
+  "#a05a35",
+  "#537b51",
+  "#6e5d9c",
+  "#a14e70",
+  "#527c83"
+];
+
+
+/* ==========================================================
+   3. PAGE ELEMENTS
+   ========================================================== */
+
 const grid = document.getElementById("member-grid");
 const statusEl = document.getElementById("directory-status");
 const countEl = document.getElementById("result-count");
 const emptyEl = document.getElementById("empty-state");
 const searchEl = document.getElementById("search");
+
+const popularFiltersEl = document.getElementById("section-filters");
+const allFiltersEl = document.getElementById("all-section-filters");
+
+const browseButton = document.getElementById("browse-filters");
+const moreFilters = document.getElementById("more-filters");
+
 const selectedSections = new Set();
+
+let profiles = [];
+
+
+/* ==========================================================
+   4. SECTION COLOR FUNCTIONS
+   ========================================================== */
+
+// Assign a consistent color to each section.
 
 function colorFor(text) {
   let hash = 0;
-  for (let i = 0; i < text.length; i++) hash = (hash * 31 + text.charCodeAt(i)) >>> 0;
+
+  for (let i = 0; i < text.length; i++) {
+    hash = (hash * 31 + text.charCodeAt(i)) >>> 0;
+  }
+
   return PALETTE[hash % PALETTE.length];
 }
-function sectionColor(section) { return colorFor(section || "Other"); }
-function buildFilter(label, container, compact = false) {
+
+function sectionColor(section) {
+  return colorFor(section || "Other");
+}
+
+
+// Convert a HEX color to a transparent HEX color.
+
+function transparentColor(hex, opacity = "80") {
+  return `${hex}${opacity}`;
+}
+
+
+/* ==========================================================
+   5. SECTION FILTER BUTTONS
+   ========================================================== */
+
+function buildFilter(section, container, compact = false) {
+
   const button = document.createElement("button");
+
   button.type = "button";
   button.className = "section-chip";
-  button.dataset.section = label;
-  button.textContent = compact ? label.replace(/\s*\([^)]*\)$/, "") : label;
-  button.style.backgroundColor = sectionColor(label);
-  button.setAttribute("aria-pressed", selectedSections.has(label) ? "true" : "false");
+
+  button.dataset.section = section;
+
+  button.textContent = compact
+    ? section.replace(/\s*\([^)]*\)$/, "")
+    : section;
+
+  button.setAttribute(
+    "aria-pressed",
+    selectedSections.has(section) ? "true" : "false"
+  );
+
+  if (selectedSections.has(section)) {
+    button.classList.add("active");
+  }
+
   button.addEventListener("click", () => {
-    if (selectedSections.has(label)) selectedSections.delete(label); else selectedSections.add(label);
-    updateFilterButtons();
-    renderProfiles();
+    toggleSection(section);
   });
+
   container.append(button);
 }
+
+
+// Update the selected appearance of all section buttons.
+
 function updateFilterButtons() {
+
   document.querySelectorAll(".section-chip").forEach(button => {
-    const label = button.dataset.section;
-    if (label) button.setAttribute("aria-pressed", selectedSections.has(label) ? "true" : "false");
+
+    const section = button.dataset.section;
+
+    const isSelected = selectedSections.has(section);
+
+    button.setAttribute(
+      "aria-pressed",
+      isSelected ? "true" : "false"
+    );
+
+    button.classList.toggle("active", isSelected);
+
   });
+
 }
+
+
+/* ==========================================================
+   6. COMPLETE SECTION FILTER LIST
+   ========================================================== */
+
 function makeFilters() {
-  const all = document.getElementById("all-section-filters");
+
+  allFiltersEl.replaceChildren();
+
   SECTIONS.forEach(section => {
-    const label = document.createElement("label"); label.className = "filter-option";
-    const input = document.createElement("input"); input.type = "checkbox"; input.value = section;
-    input.addEventListener("change", () => toggleSection(section));
-    const swatch = document.createElement("span"); swatch.className = "filter-swatch";
-    swatch.style.backgroundColor = sectionColor(section);
-    label.append(input, swatch, document.createTextNode(section)); all.append(label);
-  });
-}
-function makePopularFilters() {
-  const top = document.getElementById("section-filters");
-  top.replaceChildren();
-  const counts = new Map();
-  profiles.forEach(person => {
-    // Count each section once per profile, even if the same value appears in both fields.
-    [...new Set([person.section1, person.section2].filter(Boolean))].forEach(section => {
-      counts.set(section, (counts.get(section) || 0) + 1);
+
+    const label = document.createElement("label");
+
+    label.className = "filter-option";
+
+    const input = document.createElement("input");
+
+    input.type = "checkbox";
+    input.value = section;
+
+    input.checked = selectedSections.has(section);
+
+    input.addEventListener("change", () => {
+
+      toggleSection(section);
+
     });
+
+    const swatch = document.createElement("span");
+
+    swatch.className = "filter-swatch";
+
+    swatch.style.backgroundColor = sectionColor(section);
+
+    label.append(
+      input,
+      swatch,
+      document.createTextNode(section)
+    );
+
+    allFiltersEl.append(label);
+
   });
+
+}
+
+
+/* ==========================================================
+   7. POPULAR SECTION FILTERS
+   ========================================================== */
+
+// Rank sections according to how frequently they appear
+// in the profile database.
+//
+// Each section is counted only once per profile.
+// Ties are sorted alphabetically.
+
+function makePopularFilters() {
+
+  popularFiltersEl.replaceChildren();
+
+  const counts = new Map();
+
+  profiles.forEach(person => {
+
+    const sections = [
+      person.section1,
+      person.section2
+    ].filter(Boolean);
+
+    [...new Set(sections)].forEach(section => {
+
+      counts.set(
+        section,
+        (counts.get(section) || 0) + 1
+      );
+
+    });
+
+  });
+
+
   const popular = [...counts.entries()]
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    .sort((a, b) => {
+
+      return b[1] - a[1] ||
+        a[0].localeCompare(b[0]);
+
+    });
+
+
   if (!popular.length) {
+
     const note = document.createElement("span");
+
     note.className = "filter-empty-note";
-    note.textContent = "Section filters will appear as profiles are added";
-    top.append(note);
+
+    note.textContent =
+      "Section filters will appear as profiles are added";
+
+    popularFiltersEl.append(note);
+
     return;
+
   }
-  popular.forEach(([section]) => buildFilter(section, top, true));
+
+
+  popular.forEach(([section]) => {
+
+    buildFilter(section, popularFiltersEl, true);
+
+  });
+
 }
+
+
+/* ==========================================================
+   8. SECTION FILTER SELECTION
+   ========================================================== */
+
 function toggleSection(section) {
-  if (selectedSections.has(section)) selectedSections.delete(section); else selectedSections.add(section);
-  document.querySelectorAll(".filter-option input").forEach(input => input.checked = selectedSections.has(input.value));
-  document.querySelectorAll(".section-chip").forEach(button => button.setAttribute("aria-pressed", selectedSections.has(button.dataset.section) ? "true" : "false"));
-  renderProfiles();
-}
-function makeTag(text, isStatus = false) {
-  const tag = document.createElement("span");
-  tag.className = isStatus ? "status-tag" : "tag";
-  if (!isStatus) tag.style.backgroundColor = sectionColor(text);
-  tag.textContent = text;
-  return tag;
-}
-function renderProfiles() {
-  const query = searchEl.value.trim().toLowerCase();
-  const filtered = profiles.filter(person => {
-    const sections = [person.section1, person.section2].filter(Boolean);
-    const text = [person.full_name, person.email, person.bio, ...sections].join(" ").toLowerCase();
-    const textMatch = text.includes(query);
-    const sectionMatch = selectedSections.size === 0 || sections.some(section => selectedSections.has(section));
-    return textMatch && sectionMatch;
-  });
-  grid.replaceChildren();
-  countEl.textContent = `${filtered.length} ${filtered.length === 1 ? "profile" : "profiles"}`;
-  emptyEl.hidden = filtered.length !== 0;
-  filtered.forEach(person => {
-    const firstSection = person.section1 || "Other";
-    const card = document.createElement("article");
-    card.className = "member-card";
-    card.style.setProperty("--accent", sectionColor(firstSection));
-    const name = document.createElement("h2"); name.textContent = person.full_name;
-    const tags = document.createElement("div"); tags.className = "tags";
-    tags.append(makeTag(firstSection), makeTag(person.section2 || "Other"));
-    const email = document.createElement("span"); email.className = "member-email";
-    email.textContent = person.email;
-    const bio = document.createElement("p"); bio.className = "member-bio"; bio.textContent = person.bio;
-    const status = makeTag(person.status === "Archived" ? "Archived" : "Available", true);
-    if (person.status === "Archived") status.classList.add("archived");
-    card.append(name, tags, email, bio, status); grid.append(card);
-  });
-}
-let profiles = [];
-async function loadProfiles() {
-  try {
-    const response = await fetch("assets/profiles.json", {cache:"no-store"});
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    profiles = Array.isArray(data) ? data.filter(person => person && typeof person.full_name === "string" && typeof person.email === "string" && typeof person.bio === "string" && typeof person.section1 === "string" && typeof person.section2 === "string") : [];
-    statusEl.hidden = true;
-    makePopularFilters();
-    renderProfiles();
-  } catch (error) {
-    console.error("Could not load profiles:", error);
-    statusEl.textContent = "Profiles could not be loaded. Please try again later.";
-    countEl.textContent = "Unavailable";
+
+  if (selectedSections.has(section)) {
+
+    selectedSections.delete(section);
+
+  } else {
+
+    selectedSections.add(section);
+
   }
+
+  // Synchronize all filter controls.
+
+  document.querySelectorAll(".filter-option input").forEach(input => {
+
+    input.checked = selectedSections.has(input.value);
+
+  });
+
+  updateFilterButtons();
+
+  renderProfiles();
+
 }
-makeFilters();
+
+
+/* ==========================================================
+   9. PROFILE SECTION TAGS
+   ========================================================== */
+
+function makeTag(text) {
+
+  const tag = document.createElement("span");
+
+  tag.className = "tag";
+
+  const color = sectionColor(text);
+
+  // Transparent section-colored background.
+  tag.style.backgroundColor = transparentColor(color);
+
+  // Preserve the section-colored outline and text.
+  tag.style.borderColor = color;
+  tag.style.color = color;
+
+  tag.textContent = text;
+
+  return tag;
+
+}
+
+
+/* ==========================================================
+   10. PROFILE STATUS
+   ========================================================== */
+
+function makeStatus(statusValue) {
+
+  const status = document.createElement("span");
+
+  const archived = statusValue === "Archived";
+
+  status.className = archived
+    ? "status archived"
+    : "status available";
+
+  status.textContent = archived
+    ? "Archived"
+    : "Available";
+
+  return status;
+
+}
+
+
+/* ==========================================================
+   11. PROFILE CARD GENERATION
+   ========================================================== */
+
+function createProfileCard(person) {
+
+  const firstSection = person.section1 || "Other";
+
+  const card = document.createElement("article");
+
+  card.className = "profile-card";
+
+  // First APHA Section determines the left card accent.
+
+  card.style.borderLeftColor = sectionColor(firstSection);
+
+
+  // Full name.
+
+  const name = document.createElement("h3");
+
+  name.textContent = person.full_name;
+
+
+  // APHA Section tags.
+
+  const tags = document.createElement("div");
+
+  tags.className = "profile-tags";
+
+  tags.append(
+    makeTag(firstSection),
+    makeTag(person.section2 || "Other")
+  );
+
+
+  // Email address.
+  // Displayed as text rather than a mailto link.
+
+  const email = document.createElement("span");
+
+  email.className = "email";
+
+  email.textContent = person.email;
+
+
+  // Profile biography.
+
+  const bio = document.createElement("p");
+
+  bio.className = "bio";
+
+  bio.textContent = person.bio;
+
+
+  // Profile availability status.
+
+  const status = makeStatus(person.status);
+
+
+  // Assemble profile card.
+
+  card.append(
+    name,
+    tags,
+    email,
+    bio,
+    status
+  );
+
+  return card;
+
+}
+
+
+/* ==========================================================
+   12. DISPLAY AND FILTER PROFILES
+   ========================================================== */
+
+function renderProfiles() {
+
+  const query = searchEl.value.trim().toLowerCase();
+
+
+  const filtered = profiles.filter(person => {
+
+    const sections = [
+      person.section1,
+      person.section2
+    ].filter(Boolean);
+
+
+    // Search names, sections, emails, and biographies.
+
+    const searchableText = [
+      person.full_name,
+      person.email,
+      person.bio,
+      ...sections
+    ].join(" ").toLowerCase();
+
+
+    const textMatch = searchableText.includes(query);
+
+
+    // If multiple sections are selected, show profiles
+    // associated with ANY selected section.
+
+    const sectionMatch =
+      selectedSections.size === 0 ||
+      sections.some(section => selectedSections.has(section));
+
+
+    return textMatch && sectionMatch;
+
+  });
+
+
+  // Clear previous cards.
+
+  grid.replaceChildren();
+
+
+  // Update profile count.
+
+  countEl.textContent =
+    `${filtered.length} ${filtered.length === 1 ? "profile" : "profiles"}`;
+
+
+  // Display empty state when no profiles match.
+
+  emptyEl.hidden = filtered.length !== 0;
+
+
+  // Generate matching profile cards.
+
+  filtered.forEach(person => {
+
+    grid.append(createProfileCard(person));
+
+  });
+
+}
+
+
+/* ==========================================================
+   13. LOAD PROFILE DATABASE
+   ========================================================== */
+
+async function loadProfiles() {
+
+  try {
+
+    const response = await fetch(
+      "assets/profiles.json",
+      { cache: "no-store" }
+    );
+
+
+    if (!response.ok) {
+
+      throw new Error(`HTTP ${response.status}`);
+
+    }
+
+
+    const data = await response.json();
+
+
+    // Validate profile records.
+
+    profiles = Array.isArray(data)
+
+      ? data.filter(person =>
+
+          person &&
+          typeof person.full_name === "string" &&
+          typeof person.email === "string" &&
+          typeof person.bio === "string" &&
+          typeof person.section1 === "string" &&
+          typeof person.section2 === "string"
+
+        )
+
+      : [];
+
+
+    // Hide loading message.
+
+    statusEl.hidden = true;
+
+
+    // Build section filters based on loaded profiles.
+
+    makePopularFilters();
+
+
+    // Build profile cards.
+
+    renderProfiles();
+
+
+  } catch (error) {
+
+    console.error("Could not load profiles:", error);
+
+    statusEl.hidden = false;
+
+    statusEl.textContent =
+      "Profiles could not be loaded. Please try again later.";
+
+    countEl.textContent = "Unavailable";
+
+  }
+
+}
+
+
+/* ==========================================================
+   14. SEARCH CONTROLS
+   ========================================================== */
+
 searchEl.addEventListener("input", renderProfiles);
-document.getElementById("clear-search").addEventListener("click", () => {searchEl.value = ""; renderProfiles(); searchEl.focus();});
-document.getElementById("clear-filters").addEventListener("click", () => {selectedSections.clear(); document.querySelectorAll(".filter-option input").forEach(input => input.checked = false); updateFilterButtons(); renderProfiles();});
-document.getElementById("browse-filters").addEventListener("click", event => {const panel=document.getElementById("more-filters");panel.hidden=!panel.hidden;event.currentTarget.setAttribute("aria-expanded",String(!panel.hidden));event.currentTarget.textContent=panel.hidden?"Browse APHA Sections":"Hide APHA Sections";});
+
+
+document.getElementById("clear-search").addEventListener("click", () => {
+
+  searchEl.value = "";
+
+  renderProfiles();
+
+  searchEl.focus();
+
+});
+
+
+/* ==========================================================
+   15. CLEAR SECTION FILTERS
+   ========================================================== */
+
+document.getElementById("clear-filters").addEventListener("click", () => {
+
+  selectedSections.clear();
+
+  document.querySelectorAll(".filter-option input").forEach(input => {
+
+    input.checked = false;
+
+  });
+
+  updateFilterButtons();
+
+  renderProfiles();
+
+});
+
+
+/* ==========================================================
+   16. SHOW / HIDE COMPLETE SECTION LIST
+   ========================================================== */
+
+browseButton.addEventListener("click", () => {
+
+  moreFilters.hidden = !moreFilters.hidden;
+
+  browseButton.setAttribute(
+    "aria-expanded",
+    String(!moreFilters.hidden)
+  );
+
+  browseButton.textContent = moreFilters.hidden
+    ? "Browse APHA Sections"
+    : "Hide APHA Sections";
+
+});
+
+
+/* ==========================================================
+   17. INITIALIZE DATABASE
+   ========================================================== */
+
+makeFilters();
+
 loadProfiles();
