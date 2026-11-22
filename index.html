@@ -27,23 +27,18 @@
   <div class="page">
 
     <!-- ==================================================
-         HEADER AND APHA BRANDING
+         HEADER AND APHA LOGO
          ================================================== -->
 
     <header class="topbar">
 
-      <div
-        class="brand"
-        aria-label="American Public Health Association Gift Membership Database"
-      >
+      <div class="brand">
 
-        <div class="brand-mark" aria-hidden="true">
-          APHA
-        </div>
-
-        <div class="brand-caption">
-          AMERICAN PUBLIC HEALTH ASSOCIATION
-        </div>
+        <img
+          class="brand-logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/3/30/APHA_logo.svg"
+          alt="American Public Health Association logo"
+        >
 
       </div>
 
@@ -211,27 +206,29 @@
         </div>
 
 
-        <!-- DIRECTORY RESULTS -->
+        <!-- DIRECTORY RESULTS COUNT -->
 
         <div class="results-count">
+
           <span id="result-count">
             Loading profiles…
           </span>
+
         </div>
 
 
-        <!-- LOADING / STATUS MESSAGE -->
+        <!-- LOADING MESSAGE -->
 
         <div
           id="directory-status"
-          class="empty-state"
+          class="status-message"
           role="status"
         >
           Loading approved profiles…
         </div>
 
 
-        <!-- PROFILE GRID -->
+        <!-- PROFILE CARDS -->
 
         <div
           id="member-grid"
@@ -239,7 +236,7 @@
         ></div>
 
 
-        <!-- NO RESULTS -->
+        <!-- NO MATCHING PROFILES -->
 
         <div
           id="empty-state"
@@ -267,12 +264,12 @@
 
     <footer>
 
-      <p class="footer-note">
-        Database was created in November 2026
+      <p class="footer-title">
+        APHA Gift Membership Database
       </p>
 
-      <p>
-        APHA Gift Membership Database
+      <p class="footer-note">
+        Created in November 2026
       </p>
 
     </footer>
