@@ -6,6 +6,7 @@
 
 /* ==========================================================
    APHA SECTIONS
+   "Other" is intentionally excluded.
    ========================================================== */
 
 const SECTIONS = [
@@ -105,6 +106,9 @@ const sectionFilters = document.getElementById('section-filters');
 const careerStageFilters = document.getElementById('career-stage-filters');
 const statusFilters = document.getElementById('status-filters');
 
+const sectionToggle = document.getElementById('toggle-section-filters');
+const sectionToggleIcon = document.getElementById('section-toggle-icon');
+
 const clearSearchButton = document.getElementById('clear-search');
 const clearFiltersButton = document.getElementById('clear-filters');
 
@@ -118,6 +122,32 @@ let profiles = [];
 const selectedSections = new Set();
 const selectedCareerStages = new Set();
 const selectedStatuses = new Set();
+
+
+/* ==========================================================
+   SECTION HELPERS
+   ========================================================== */
+
+function normalizeValue(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase();
+}
+
+
+function isOtherSection(section) {
+  return normalizeValue(section) === 'other';
+}
+
+
+function getValidProfileSections(profile) {
+  return [
+    profile.section1,
+    profile.section2
+  ].filter(section => {
+    return section && !isOtherSection(section);
+  });
+}
 
 
 /* ==========================================================
@@ -148,15 +178,8 @@ function getTransparentColor(hex) {
 
 
 /* ==========================================================
-   NORMALIZE PROFILE VALUES
+   PROFILE STATUS AND CAREER STAGE
    ========================================================== */
-
-function normalizeValue(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase();
-}
-
 
 function getProfileStatus(profile) {
   const status = normalizeValue(profile.status);
@@ -195,13 +218,6 @@ function makeCheckboxFilter(container, value, group, color = null) {
   checkbox.type = 'checkbox';
   checkbox.value = value;
 
-  const swatch = document.createElement('span');
-
-  if (color) {
-    swatch.className = 'filter-swatch';
-    swatch.style.backgroundColor = color;
-  }
-
   const text = document.createElement('span');
   text.textContent = value;
 
@@ -218,11 +234,13 @@ function makeCheckboxFilter(container, value, group, color = null) {
   label.appendChild(checkbox);
 
   if (color) {
+    const swatch = document.createElement('span');
+    swatch.className = 'filter-swatch';
+    swatch.style.backgroundColor = color;
     label.appendChild(swatch);
   }
 
   label.appendChild(text);
-
   container.appendChild(label);
 }
 
@@ -259,15 +277,17 @@ function updateSectionFilterLayout() {
 
 
 /* ==========================================================
-   CREATE SECTION FILTERS
+   CREATE APHA SECTION FILTERS
    ========================================================== */
 
 function makeSectionFilters() {
   sectionFilters.innerHTML = '';
 
-  const sortedSections = [...SECTIONS].sort((a, b) =>
-    a.localeCompare(b, undefined, { sensitivity: 'base' })
-  );
+  const sortedSections = [...SECTIONS]
+    .filter(section => !isOtherSection(section))
+    .sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: 'base' })
+    );
 
   sortedSections.forEach(section => {
     makeCheckboxFilter(
@@ -313,6 +333,28 @@ function makeStatusFilters() {
       selectedStatuses
     );
   });
+}
+
+
+/* ==========================================================
+   SHOW / HIDE APHA SECTION FILTER LIST
+   Hidden by default.
+   ========================================================== */
+
+function toggleSectionFilterList() {
+  const isExpanded =
+    sectionToggle.getAttribute('aria-expanded') === 'true';
+
+  const shouldExpand = !isExpanded;
+
+  sectionToggle.setAttribute(
+    'aria-expanded',
+    String(shouldExpand)
+  );
+
+  sectionFilters.hidden = !shouldExpand;
+
+  sectionToggleIcon.textContent = shouldExpand ? '−' : '+';
 }
 
 
@@ -373,6 +415,7 @@ function formatEmail(email) {
 
 /* ==========================================================
    SEARCH MATCHING
+   Searches names, keywords, emails, bios, and APHA Sections.
    ========================================================== */
 
 function matchesSearch(profile, query) {
@@ -384,8 +427,7 @@ function matchesSearch(profile, query) {
     profile.full_name,
     profile.email,
     profile.bio,
-    profile.section1,
-    profile.section2,
+    ...getValidProfileSections(profile),
     getCareerStage(profile),
     getProfileStatus(profile)
   ]
@@ -407,10 +449,7 @@ function matchesSections(profile) {
     return true;
   }
 
-  const profileSections = [
-    profile.section1,
-    profile.section2
-  ].filter(Boolean);
+  const profileSections = getValidProfileSections(profile);
 
   return profileSections.some(section =>
     selectedSections.has(section)
@@ -485,8 +524,10 @@ function makeProfileCard(profile) {
   const card = document.createElement('article');
   card.className = 'profile-card';
 
-  const firstSectionColor = profile.section1
-    ? getSectionColor(profile.section1)
+  const profileSections = getValidProfileSections(profile);
+
+  const firstSectionColor = profileSections.length > 0
+    ? getSectionColor(profileSections[0])
     : '#2875b8';
 
   card.style.borderLeftColor = firstSectionColor;
@@ -536,21 +577,17 @@ function makeProfileCard(profile) {
   }
 
 
-  /* Full APHA Section names
-     Placed after the bio */
+  /* APHA Section tags
+     "Other" is excluded from profile cards too. */
 
-  const tags = document.createElement('div');
-  tags.className = 'profile-tags';
+  if (profileSections.length > 0) {
+    const tags = document.createElement('div');
+    tags.className = 'profile-tags';
 
-  if (profile.section1) {
-    tags.appendChild(makeTag(profile.section1));
-  }
+    profileSections.forEach(section => {
+      tags.appendChild(makeTag(section));
+    });
 
-  if (profile.section2) {
-    tags.appendChild(makeTag(profile.section2));
-  }
-
-  if (profile.section1 || profile.section2) {
     card.appendChild(tags);
   }
 
@@ -681,7 +718,15 @@ clearFiltersButton.addEventListener(
   clearAllFilters
 );
 
-window.addEventListener('resize', updateSectionFilterLayout);
+sectionToggle.addEventListener(
+  'click',
+  toggleSectionFilterList
+);
+
+window.addEventListener(
+  'resize',
+  updateSectionFilterLayout
+);
 
 
 /* ==========================================================
