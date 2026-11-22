@@ -1,33 +1,22 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Searchable database connecting APHA members seeking sponsors for a one-year membership waiver.">
-
   <title>APHA Gift Membership Database</title>
-
   <link rel="stylesheet" href="assets/styles.css">
   <script defer src="assets/app.js"></script>
 </head>
-
 <body>
   <div class="page">
-
     <header class="topbar">
-
       <div class="brand">
-        <img
-          class="brand-logo"
-          src="assets/apha-logo.svg"
-          alt="American Public Health Association logo"
-        >
+        <img class="brand-logo" src="assets/apha-logo.svg" alt="American Public Health Association logo">
       </div>
 
       <div class="intro">
         <h1>APHA Gift Membership Database</h1>
-
         <p>
           Searchable database of dedicated current APHA members seeking
           financial support for a 1-year APHA membership waiver.
@@ -40,145 +29,77 @@
           receipt of the transaction/processing of the APHA membership
           from APHA staff.
         </p>
-
         <p class="season-note">“Tis the season of giving!</p>
       </div>
 
       <div class="header-actions">
-
         <span class="admin-note">
-          Managed by Dr. Sharonda Lovett      in collaboration with APHA Staff
+          Managed by Dr. Sharonda Lovett<br>
+          in collaboration with APHA Staff
         </span>
 
-        <a
-          class="button button-blue"
-          href="https://www.apha.org/membership/gift-membership"
-          target="_blank"
-          rel="noopener"
-        >
+        <a class="button button-blue"
+           href="https://www.apha.org/membership/gift-membership"
+           target="_blank" rel="noopener">
           Learn more about the<br>
           APHA Gift Membership Program
         </a>
 
-        <a
-          class="button button-red"
-          href="https://forms.gle/DpoUy8tkKuhgpYQf6"
-          target="_blank"
-          rel="noopener"
-        >
+        <a class="button button-red"
+           href="https://forms.gle/DpoUy8tkKuhgpYQf6"
+           target="_blank" rel="noopener">
           Database Intake Form
         </a>
-
       </div>
     </header>
 
     <main>
-
-      <section
-        class="directory"
-        aria-label="Search and browse member profiles"
-      >
-
+      <section class="directory" aria-label="Search and browse member profiles">
         <div class="controls">
           <div class="search-box">
-
-            <label class="sr-only" for="search">
-              Search profiles
-            </label>
-
+            <label class="sr-only" for="search">Search profiles</label>
             <span class="search-icon" aria-hidden="true">⌕</span>
-
             <input
               id="search"
               type="search"
               placeholder="Search names, keywords, and APHA Sections..."
-              autocomplete="off"
-            >
-
-            <button
-              id="clear-search"
-              type="button"
-              aria-label="Clear search"
-            >
-              ×
-            </button>
-
+              autocomplete="off">
+            <button id="clear-search" type="button" aria-label="Clear search">×</button>
           </div>
         </div>
 
         <div class="filter-panel">
-
           <div class="filter-panel-heading">
             <h2>Filter Profiles</h2>
-
-            <button
-              id="clear-filters"
-              class="clear-filters"
-              type="button"
-            >
+            <button id="clear-filters" class="clear-filters" type="button">
               Clear all filters
             </button>
           </div>
 
-          <!-- 1. STATUS FILTER -->
-
           <div class="filter-group">
             <h3>Status</h3>
-
             <div
               id="status-filters"
               class="filter-options"
-              aria-label="Filter by profile status"
-            ></div>
+              aria-label="Filter by profile status">
+            </div>
           </div>
-
-          <!-- 2. CAREER STAGE FILTER -->
 
           <div class="filter-group">
             <h3>Career Stage</h3>
-
             <div
               id="career-stage-filters"
               class="filter-options"
-              aria-label="Filter by career stage"
-            ></div>
+              aria-label="Filter by career stage">
+            </div>
           </div>
-
-          <!-- 3. APHA SECTION FILTER -->
-
-          <div class="filter-group section-filter-group">
-
-            <button
-              id="toggle-section-filters"
-              class="section-toggle"
-              type="button"
-              aria-expanded="false"
-              aria-controls="section-filters"
-            >
-              <span>APHA Section</span>
-              <span id="section-toggle-icon" aria-hidden="true">+</span>
-            </button>
-
-            <div
-              id="section-filters"
-              class="section-list"
-              aria-label="Filter by APHA Section"
-              hidden
-            ></div>
-
-          </div>
-
         </div>
 
         <div class="directory-meta">
           <span id="result-count">Loading profiles…</span>
         </div>
 
-        <div
-          id="directory-status"
-          class="status-message"
-          role="status"
-        >
+        <div id="directory-status" class="status-message" role="status">
           Loading approved profiles…
         </div>
 
@@ -186,21 +107,18 @@
 
         <div id="empty-state" class="empty-state" hidden>
           <h2>No matching profiles</h2>
-
           <p>
             Try changing your search or filters, or check back as
             additional members are added.
           </p>
         </div>
-
       </section>
     </main>
 
     <footer>
       <p class="footer-title">APHA Gift Membership Database</p>
-      <p class="footer-note">Created in November 2026</p>
+      <p class="footer-note">Created in November 2026; Last Updated 11-22-2026</p>
     </footer>
-
   </div>
 </body>
 </html>
