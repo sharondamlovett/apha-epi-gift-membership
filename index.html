@@ -91,7 +91,7 @@
             <input
               id="search"
               type="search"
-              placeholder="Search names, sections, emails, bios…"
+              placeholder="Search names, keywords, and APHA Sections..."
               autocomplete="off"
             >
 
@@ -146,14 +146,26 @@
 
           <!-- 3. APHA SECTION FILTER -->
 
-          <div class="filter-group">
-            <h3>APHA Section</h3>
+          <div class="filter-group section-filter-group">
+
+            <button
+              id="toggle-section-filters"
+              class="section-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="section-filters"
+            >
+              <span>APHA Section</span>
+              <span id="section-toggle-icon" aria-hidden="true">+</span>
+            </button>
 
             <div
               id="section-filters"
               class="section-list"
               aria-label="Filter by APHA Section"
+              hidden
             ></div>
+
           </div>
 
         </div>
