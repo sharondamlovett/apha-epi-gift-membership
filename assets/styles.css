@@ -1,4 +1,8 @@
 
+/* ==========================================================
+   APHA GIFT MEMBERSHIP DATABASE
+   ========================================================== */
+
 :root {
   --ink: #000000;
   --muted: #777777;
@@ -33,6 +37,7 @@ body {
   margin: 0 auto;
   padding: 24pt 28pt 0;
 }
+
 
 /* ==========================================================
    HEADER
@@ -107,6 +112,11 @@ body {
   text-align: center;
 }
 
+
+/* ==========================================================
+   HEADER BUTTONS
+   ========================================================== */
+
 .button {
   display: block;
   width: 100%;
@@ -118,22 +128,29 @@ body {
   line-height: 1.35;
   text-align: center;
   text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
 .button:hover {
   transform: translateY(-1pt);
 }
 
-.button-muted {
-  border-color: #d9e1e8;
-  background: #f4f6f8;
-  color: #245b82;
+/* APHA Gift Membership Program button */
+
+.button-blue {
+  border-color: var(--blue);
+  background: #2875b8;
+  color: #ffffff;
 }
 
-.button-muted:hover {
-  background: #eaf0f5;
+.button-blue:hover {
+  background: #1f639e;
+  color: #ffffff;
 }
+
+/* Database Intake Form button */
 
 .button-red {
   background: var(--red);
@@ -143,6 +160,7 @@ body {
 .button-red:hover {
   background: #98202d;
 }
+
 
 /* ==========================================================
    DIRECTORY AND SEARCH
@@ -166,7 +184,9 @@ body {
   border: 1pt solid #dfe4e8;
   border-radius: 7pt;
   background: #ffffff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .search-box:focus-within {
@@ -211,6 +231,7 @@ body {
   color: var(--red);
 }
 
+
 /* ==========================================================
    FILTER PANEL
    ========================================================== */
@@ -254,6 +275,7 @@ body {
   text-decoration: underline;
 }
 
+
 /* ==========================================================
    INDIVIDUAL FILTER GROUPS
    ========================================================== */
@@ -277,9 +299,10 @@ body {
   gap: 7pt;
 }
 
+
 /* ==========================================================
    APHA SECTION FILTER
-   Three columns, filled vertically by JavaScript
+   Columns are filled vertically by JavaScript.
    ========================================================== */
 
 .section-list {
@@ -331,6 +354,7 @@ body {
   border-radius: 50%;
 }
 
+
 /* ==========================================================
    RESULTS COUNT
    ========================================================== */
@@ -350,6 +374,7 @@ body {
   font-size: 10pt;
 }
 
+
 /* ==========================================================
    PROFILE GRID
    ========================================================== */
@@ -360,6 +385,7 @@ body {
   gap: 12pt;
   align-items: stretch;
 }
+
 
 /* ==========================================================
    PROFILE CARDS
@@ -395,29 +421,6 @@ body {
   overflow-wrap: anywhere;
 }
 
-/* ==========================================================
-   FULL SECTION TAGS
-   ========================================================== */
-
-.profile-tags {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 5pt;
-  margin-bottom: 9pt;
-}
-
-.tag {
-  display: inline-block;
-  max-width: 100%;
-  padding: 4pt 7pt;
-  border: 1pt solid currentColor;
-  border-radius: 20pt;
-  font-size: 8pt;
-  font-weight: 700;
-  line-height: 1.25;
-  overflow-wrap: anywhere;
-}
 
 /* ==========================================================
    CAREER STAGE, EMAIL AND BIO
@@ -446,6 +449,32 @@ body {
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
+
+
+/* ==========================================================
+   FULL APHA SECTION TAGS
+   ========================================================== */
+
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5pt;
+  margin-bottom: 9pt;
+}
+
+.tag {
+  display: inline-block;
+  max-width: 100%;
+  padding: 4pt 7pt;
+  border: 1pt solid currentColor;
+  border-radius: 20pt;
+  font-size: 8pt;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 
 /* ==========================================================
    PROFILE STATUS LABELS
@@ -480,6 +509,7 @@ body {
   color: #b92736;
 }
 
+
 /* ==========================================================
    EMPTY STATE
    ========================================================== */
@@ -504,6 +534,7 @@ body {
   color: #777777;
   font-size: 10pt;
 }
+
 
 /* ==========================================================
    FOOTER
@@ -536,6 +567,7 @@ footer {
   text-align: right;
 }
 
+
 /* ==========================================================
    ACCESSIBILITY
    ========================================================== */
@@ -551,6 +583,7 @@ footer {
   white-space: nowrap;
   border: 0;
 }
+
 
 /* ==========================================================
    RESPONSIVE LAYOUT
@@ -572,6 +605,7 @@ footer {
     width: 125pt;
   }
 }
+
 
 /* Tablets */
 
@@ -605,6 +639,7 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
 
 /* Small tablets and larger phones */
 
@@ -648,6 +683,7 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
 
 /* Phones */
 
