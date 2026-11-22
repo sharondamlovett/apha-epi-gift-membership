@@ -1,52 +1,31 @@
 
 <!doctype html>
 <html lang="en">
-
 <head>
-
   <meta charset="utf-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <meta
-    name="description"
-    content="Searchable database connecting APHA members seeking sponsors for a one-year membership waiver."
-  >
+  <meta name="description" content="Searchable database connecting APHA members seeking sponsors for a one-year membership waiver.">
 
   <title>APHA Gift Membership Database</title>
 
   <link rel="stylesheet" href="assets/styles.css">
-
   <script defer src="assets/app.js"></script>
-
 </head>
 
-
 <body>
-
   <div class="page">
-
-    <!-- ==================================================
-         HEADER AND APHA LOGO
-         ================================================== -->
 
     <header class="topbar">
 
       <div class="brand">
-
         <img
           class="brand-logo"
-          src="https://upload.wikimedia.org/wikipedia/commons/3/30/APHA_logo.svg"
+          src="assets/apha-logo.svg"
           alt="American Public Health Association logo"
         >
-
       </div>
 
-
-      <!-- INTRODUCTION -->
-
       <div class="intro">
-
         <h1>Gift Membership Database</h1>
 
         <p>
@@ -62,21 +41,13 @@
           from APHA staff.
         </p>
 
-        <p class="season-note">
-          “Tis the season of giving!
-        </p>
-
+        <p class="season-note">“Tis the season of giving!</p>
       </div>
 
-
-      <!-- HEADER ACTIONS -->
-
       <div class="header-actions">
-
         <span class="admin-note">
           Database is managed by Dr. Sharonda Lovett
         </span>
-
 
         <a
           class="button button-muted"
@@ -88,7 +59,6 @@
           APHA Gift Membership Program
         </a>
 
-
         <a
           class="button button-red"
           href="https://forms.gle/DpoUy8tkKuhgpYQf6"
@@ -97,57 +67,44 @@
         >
           Get Added to the Database
         </a>
-
       </div>
 
     </header>
 
-
-    <!-- ==================================================
-         MAIN DIRECTORY
-         ================================================== -->
-
     <main>
-
       <section
         class="directory"
         aria-label="Search and browse member profiles"
       >
 
-
-        <!-- SEARCH -->
-
         <div class="controls">
-
           <div class="search-box">
+            <label class="sr-only" for="search">
+              Search profiles
+            </label>
+
+            <span class="search-icon" aria-hidden="true">⌕</span>
 
             <input
               id="search"
               type="search"
               placeholder="Search names, sections, emails, bios…"
               autocomplete="off"
-              aria-label="Search profiles"
             >
 
+            <button
+              id="clear-search"
+              type="button"
+              aria-label="Clear search"
+            >
+              ×
+            </button>
           </div>
-
-
-          <button
-            id="clear-search"
-            type="button"
-            aria-label="Clear search"
-          >
-            Clear search
-          </button>
-
         </div>
-
-
-        <!-- POPULAR SECTION FILTERS -->
 
         <div class="section-filter">
 
-          <h2>SECTION</h2>
+          <div class="filter-label">SECTION</div>
 
           <div
             id="section-filters"
@@ -155,11 +112,10 @@
             aria-label="Popular APHA section filters"
           ></div>
 
-
-          <div class="section-filter-actions">
-
+          <div class="filter-actions">
             <button
               id="browse-filters"
+              class="browse-button"
               type="button"
               aria-expanded="false"
             >
@@ -168,56 +124,33 @@
 
             <button
               id="clear-filters"
+              class="clear-filters"
               type="button"
             >
               Clear filters
             </button>
-
           </div>
 
         </div>
 
+        <div id="more-filters" class="more-filters" hidden>
 
-        <!-- COMPLETE SECTION FILTER LIST -->
+          <p>
+            Select one or more APHA Sections to filter the database.
+            Selecting multiple sections shows profiles associated
+            with any selected section.
+          </p>
 
-        <div
-          id="more-filters"
-          class="more-filters"
-          hidden
-        >
-
-          <div class="section-filter">
-
-            <h2>All APHA Sections</h2>
-
-            <p>
-              Select one or more APHA Sections to filter the database.
-              Selecting multiple sections shows profiles associated
-              with any selected section.
-            </p>
-
-            <div
-              id="all-section-filters"
-              class="section-list"
-            ></div>
-
-          </div>
+          <div
+            id="all-section-filters"
+            class="section-list all-section-filters"
+          ></div>
 
         </div>
 
-
-        <!-- DIRECTORY RESULTS COUNT -->
-
-        <div class="results-count">
-
-          <span id="result-count">
-            Loading profiles…
-          </span>
-
+        <div class="directory-meta">
+          <span id="result-count">Loading profiles…</span>
         </div>
-
-
-        <!-- LOADING MESSAGE -->
 
         <div
           id="directory-status"
@@ -227,43 +160,24 @@
           Loading approved profiles…
         </div>
 
-
-        <!-- PROFILE CARDS -->
-
         <div
           id="member-grid"
           class="profile-grid"
         ></div>
 
-
-        <!-- NO MATCHING PROFILES -->
-
-        <div
-          id="empty-state"
-          class="empty-state"
-          hidden
-        >
-
+        <div id="empty-state" class="empty-state" hidden>
           <h2>No matching profiles</h2>
 
           <p>
             Try changing your search or section filters, or check
             back as members are added.
           </p>
-
         </div>
 
       </section>
-
     </main>
 
-
-    <!-- ==================================================
-         FOOTER
-         ================================================== -->
-
     <footer>
-
       <p class="footer-title">
         APHA Gift Membership Database
       </p>
@@ -271,11 +185,8 @@
       <p class="footer-note">
         Created in November 2026
       </p>
-
     </footer>
 
   </div>
-
 </body>
-
 </html>
