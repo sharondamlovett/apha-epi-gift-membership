@@ -12,3 +12,6 @@ body, body * { font-family: Arial, Helvetica, sans-serif !important; font-size: 
 /* Keep the APHA wordmark prominent and blue while body copy follows the 11-point Arial rule. */
 .brand-mark { font-size: 32px !important; color: #2875b8 !important; }
 .filter-empty-note{font:11pt Arial,Helvetica,sans-serif;color:#000;padding:4px 2px}
+
+/* Management note font size */
+.admin-note {font-size: 8pt !important;}
