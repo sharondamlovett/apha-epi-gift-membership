@@ -18,6 +18,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -137,28 +141,39 @@ body {
   transform: translateY(-1pt);
 }
 
-/* APHA Gift Membership Program button */
+/* APHA Gift Membership Program:
+   Solid blue background and white text in every link state. */
 
-.button-blue {
-  border-color: var(--blue);
-  background: #2875b8;
-  color: #ffffff;
+.button-blue,
+.button-blue:link,
+.button-blue:visited,
+.button-blue:active {
+  border-color: #2875b8;
+  background-color: #2875b8;
+  color: #ffffff !important;
 }
 
 .button-blue:hover {
-  background: #1f639e;
-  color: #ffffff;
+  border-color: #1f639e;
+  background-color: #1f639e;
+  color: #ffffff !important;
 }
 
-/* Database Intake Form button */
+/* Database Intake Form */
 
-.button-red {
-  background: var(--red);
-  color: #ffffff;
+.button-red,
+.button-red:link,
+.button-red:visited,
+.button-red:active {
+  border-color: #b92736;
+  background-color: #b92736;
+  color: #ffffff !important;
 }
 
 .button-red:hover {
-  background: #98202d;
+  border-color: #98202d;
+  background-color: #98202d;
+  color: #ffffff !important;
 }
 
 
@@ -301,8 +316,57 @@ body {
 
 
 /* ==========================================================
-   APHA SECTION FILTER
-   Columns are filled vertically by JavaScript.
+   APHA SECTION FILTER TOGGLE
+   ========================================================== */
+
+.section-filter-group {
+  padding-bottom: 4pt;
+}
+
+.section-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 2pt 0;
+  border: 0;
+  background: transparent;
+  color: #555555;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 10pt;
+  font-weight: 700;
+  text-align: left;
+}
+
+.section-toggle:hover {
+  color: var(--blue);
+}
+
+.section-toggle:focus-visible {
+  outline: 2pt solid var(--blue);
+  outline-offset: 3pt;
+  border-radius: 3pt;
+}
+
+#section-toggle-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 18pt;
+  height: 18pt;
+  border: 1pt solid #d8dfe5;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--blue);
+  font-size: 13pt;
+  line-height: 1;
+}
+
+
+/* ==========================================================
+   APHA SECTION FILTER LIST
+   Hidden by default; displayed when expanded.
    ========================================================== */
 
 .section-list {
@@ -312,7 +376,17 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
   gap: 7pt 12pt;
+  margin-top: 11pt;
 }
+
+.section-list[hidden] {
+  display: none !important;
+}
+
+
+/* ==========================================================
+   FILTER CHECKBOXES
+   ========================================================== */
 
 .filter-option {
   display: flex;
@@ -493,15 +567,11 @@ body {
   font-weight: 700;
 }
 
-/* Available: green */
-
 .status.available {
   border-color: #347449;
   background: #eaf5ed;
   color: #347449;
 }
-
-/* Archived: red */
 
 .status.archived {
   border-color: #b92736;
