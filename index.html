@@ -4,8 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Searchable database connecting current APHA members seeking 1-year membership waivers with prospective donors.">
+
+  <meta name="description" content="Searchable database connecting APHA members seeking sponsors for a one-year membership waiver.">
+
   <title>APHA Gift Membership Database</title>
+
   <link rel="stylesheet" href="assets/styles.css">
   <script defer src="assets/app.js"></script>
 </head>
@@ -14,6 +17,7 @@
   <div class="page">
 
     <header class="topbar">
+
       <div class="brand">
         <img
           class="brand-logo"
@@ -26,21 +30,23 @@
         <h1>APHA Gift Membership Database</h1>
 
         <p>
-          Searchable database of current APHA members seeking financial support for a 1-year APHA membership waiver.
-          Prospective donors can review the profiles of prospective recipients, identify which recipient(s) they wish to gift to,
+          Searchable database of dedicated current APHA members seeking
+          financial support for a 1-year APHA membership waiver.
+          Prospective donors can review the profiles of prospective
+          recipients, identify which recipient(s) they wish to gift to,
           and contact APHA staff directly at 1-877-396-APHA (2742)
-          weekdays between 9am–5pm Eastern Time to coordinate payment. All donors and
-          gifted recipients will receive an email confirmation of the transaction receipt for the APHA membership
-          from APHA staff. Please do not attempt to exchange payment without APHA staff.
-        
-        <p>
-        <p class="season-note">Questions? Email sharonda.lovett.apha [at] gmail.com and membership [at] apha.org</p>
-
+          weekdays between 9–5pm Eastern Time to coordinate payment.
+          Please do not attempt to coordinate payment with prospective
+          recipients. All donors and recipients will receive an email
+          receipt of the transaction/processing of the APHA membership
+          from APHA staff.
         </p>
-        'Tis the season of giving!
+
+        <p class="season-note">“Tis the season of giving!</p>
       </div>
 
       <div class="header-actions">
+
         <span class="admin-note">
           Managed by Dr. Sharonda Lovett<br>
           in collaboration with APHA Staff
@@ -64,16 +70,19 @@
         >
           Database Intake Form
         </a>
+
       </div>
     </header>
 
     <main>
+
       <section
         class="directory"
         aria-label="Search and browse member profiles"
       >
 
         <div class="controls">
+
           <div class="search-box">
             <label class="sr-only" for="search">
               Search profiles
@@ -92,10 +101,9 @@
               id="clear-search"
               type="button"
               aria-label="Clear search"
-            >
-              ×
-            </button>
+            >×</button>
           </div>
+
         </div>
 
         <div class="filter-panel">
@@ -114,7 +122,6 @@
 
           <div class="filter-group">
             <h3>Status</h3>
-
             <div
               id="status-filters"
               class="filter-options"
@@ -124,7 +131,6 @@
 
           <div class="filter-group">
             <h3>Career Stage</h3>
-
             <div
               id="career-stage-filters"
               class="filter-options"
@@ -134,7 +140,7 @@
 
         </div>
 
-        <div class="directory-meta">
+        <div id="directory-meta" class="directory-meta">
           <span id="result-count">Loading profiles…</span>
         </div>
 
@@ -143,7 +149,7 @@
           class="status-message"
           role="status"
         >
-          Loading approved profiles…
+          Connecting to the APHA profile database…
         </div>
 
         <div id="member-grid" class="profile-grid"></div>
@@ -157,10 +163,12 @@
         </div>
 
       </section>
+
     </main>
 
     <footer>
       <p class="footer-title">APHA Gift Membership Database</p>
+
       <p class="footer-note">
         Created in November 2026; Last Updated 11-22-2026
       </p>
