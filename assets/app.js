@@ -3,6 +3,11 @@
    APHA GIFT MEMBERSHIP DATABASE
    ========================================================== */
 
+
+/* ==========================================================
+   APHA SECTIONS
+   ========================================================== */
+
 const SECTIONS = [
   'Aging and Public Health (APH)',
   'Alcohol, Tobacco, and Other Drugs (ATOD)',
@@ -38,6 +43,21 @@ const SECTIONS = [
   'School Health Education and Services (SHES)',
   'Sexual and Reproductive Health (SRH)',
   'Vision Care (VC)'
+];
+
+
+/* ==========================================================
+   FILTER OPTIONS
+   ========================================================== */
+
+const CAREER_STAGES = [
+  'Student',
+  'Early Career Professional'
+];
+
+const PROFILE_STATUSES = [
+  'Available',
+  'Archived'
 ];
 
 
@@ -81,11 +101,10 @@ const resultCount = document.getElementById('result-count');
 const emptyState = document.getElementById('empty-state');
 
 const searchInput = document.getElementById('search');
-const sectionFilters = document.getElementById('section-filters');
-const allSectionFilters = document.getElementById('all-section-filters');
 
-const browseButton = document.getElementById('browse-filters');
-const moreFilters = document.getElementById('more-filters');
+const sectionFilters = document.getElementById('section-filters');
+const careerStageFilters = document.getElementById('career-stage-filters');
+const statusFilters = document.getElementById('status-filters');
 
 const clearSearchButton = document.getElementById('clear-search');
 const clearFiltersButton = document.getElementById('clear-filters');
@@ -96,7 +115,10 @@ const clearFiltersButton = document.getElementById('clear-filters');
    ========================================================== */
 
 let profiles = [];
-let selectedSections = new Set();
+
+const selectedSections = new Set();
+const selectedCareerStages = new Set();
+const selectedStatuses = new Set();
 
 
 /* ==========================================================
@@ -126,185 +148,189 @@ function getTransparentColor(hex) {
 }
 
 
-function getSectionAbbreviation(section) {
-  const match = section.match(/\(([^)]+)\)$/);
+/* ==========================================================
+   NORMALIZE PROFILE VALUES
+   ========================================================== */
 
-  if (match) {
-    return match[1];
+function normalizeValue(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase();
+}
+
+
+function getProfileStatus(profile) {
+  const status = normalizeValue(profile.status);
+
+  if (
+    status === 'archived' ||
+    status === 'inactive' ||
+    profile.archived === true
+  ) {
+    return 'Archived';
   }
 
-  return section;
+  return 'Available';
+}
+
+
+function getCareerStage(profile) {
+  return String(
+    profile.career_stage ||
+    profile.careerStage ||
+    ''
+  ).trim();
 }
 
 
 /* ==========================================================
-   SECTION FILTER HELPERS
+   CREATE CHECKBOX FILTER
    ========================================================== */
 
-function getSectionsInUse() {
-  const usedSections = new Set();
+function makeCheckboxFilter(container, value, group, color = null) {
+  const label = document.createElement('label');
+  label.className = 'filter-option';
 
-  profiles.forEach(profile => {
-    if (profile.section1) {
-      usedSections.add(profile.section1);
+  const checkbox = document.createElement('input');
+
+  checkbox.type = 'checkbox';
+  checkbox.value = value;
+
+  const swatch = document.createElement('span');
+
+  if (color) {
+    swatch.className = 'filter-swatch';
+    swatch.style.backgroundColor = color;
+  }
+
+  const text = document.createElement('span');
+  text.textContent = value;
+
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      group.add(value);
+    } else {
+      group.delete(value);
     }
 
-    if (profile.section2) {
-      usedSections.add(profile.section2);
-    }
+    renderProfiles();
   });
 
-  return [...usedSections].sort((a, b) =>
-    a.localeCompare(b, undefined, { sensitivity: 'base' })
-  );
-}
+  label.appendChild(checkbox);
 
+  if (color) {
+    label.appendChild(swatch);
+  }
 
-function getSectionCounts() {
-  const counts = {};
+  label.appendChild(text);
 
-  profiles.forEach(profile => {
-    const uniqueSections = new Set([
-      profile.section1,
-      profile.section2
-    ].filter(Boolean));
-
-    uniqueSections.forEach(section => {
-      counts[section] = (counts[section] || 0) + 1;
-    });
-  });
-
-  return counts;
+  container.appendChild(label);
 }
 
 
 /* ==========================================================
-   CREATE QUICK SECTION FILTERS
+   CREATE SECTION FILTERS
+   Alphabetical order, top-to-bottom in each column
    ========================================================== */
 
-function makeQuickFilters() {
+function makeSectionFilters() {
   sectionFilters.innerHTML = '';
 
-  const counts = getSectionCounts();
-
-  const popularSections = Object.keys(counts)
-    .sort((a, b) => {
-      if (counts[b] !== counts[a]) {
-        return counts[b] - counts[a];
-      }
-
-      return a.localeCompare(b);
-    })
-    .slice(0, 6);
-
-  popularSections.forEach(section => {
-    const button = document.createElement('button');
-
-    button.type = 'button';
-    button.className = 'section-chip';
-    button.textContent = getSectionAbbreviation(section);
-    button.title = section;
-    button.dataset.section = section;
-    button.setAttribute('aria-pressed', 'false');
-
-    button.addEventListener('click', () => {
-      toggleSection(section);
-    });
-
-    sectionFilters.appendChild(button);
-  });
-}
-
-
-/* ==========================================================
-   CREATE COMPLETE ALPHABETICAL SECTION BROWSER
-   ========================================================== */
-
-function makeAllSectionFilters() {
-  allSectionFilters.innerHTML = '';
-
-  const sections = [...SECTIONS].sort((a, b) =>
+  const sortedSections = [...SECTIONS].sort((a, b) =>
     a.localeCompare(b, undefined, { sensitivity: 'base' })
   );
 
-  sections.forEach(section => {
-    const label = document.createElement('label');
-    label.className = 'filter-option';
+  /*
+    Three columns filled vertically:
+    Column 1: first alphabetical group
+    Column 2: next alphabetical group
+    Column 3: final alphabetical group
+  */
 
-    const checkbox = document.createElement('input');
+  const rowsPerColumn = Math.ceil(sortedSections.length / 3);
 
-    checkbox.type = 'checkbox';
-    checkbox.value = section;
-    checkbox.checked = selectedSections.has(section);
+  sectionFilters.style.gridTemplateRows =
+    `repeat(${rowsPerColumn}, auto)`;
 
-    const swatch = document.createElement('span');
-    swatch.className = 'filter-swatch';
-
-    const color = getSectionColor(section);
-
-    swatch.style.backgroundColor = color;
-
-    const text = document.createElement('span');
-    text.textContent = section;
-
-    checkbox.addEventListener('change', () => {
-      if (checkbox.checked) {
-        selectedSections.add(section);
-      } else {
-        selectedSections.delete(section);
-      }
-
-      renderFilters();
-      renderProfiles();
-    });
-
-    label.appendChild(checkbox);
-    label.appendChild(swatch);
-    label.appendChild(text);
-
-    allSectionFilters.appendChild(label);
+  sortedSections.forEach(section => {
+    makeCheckboxFilter(
+      sectionFilters,
+      section,
+      selectedSections,
+      getSectionColor(section)
+    );
   });
 }
 
 
 /* ==========================================================
-   UPDATE FILTER APPEARANCE
+   CREATE CAREER STAGE FILTERS
+   ========================================================== */
+
+function makeCareerStageFilters() {
+  careerStageFilters.innerHTML = '';
+
+  CAREER_STAGES.forEach(stage => {
+    makeCheckboxFilter(
+      careerStageFilters,
+      stage,
+      selectedCareerStages
+    );
+  });
+}
+
+
+/* ==========================================================
+   CREATE STATUS FILTERS
+   ========================================================== */
+
+function makeStatusFilters() {
+  statusFilters.innerHTML = '';
+
+  PROFILE_STATUSES.forEach(status => {
+    makeCheckboxFilter(
+      statusFilters,
+      status,
+      selectedStatuses
+    );
+  });
+}
+
+
+/* ==========================================================
+   UPDATE FILTER CHECKBOXES
    ========================================================== */
 
 function renderFilters() {
-  document.querySelectorAll('.section-chip').forEach(button => {
-    const selected = selectedSections.has(button.dataset.section);
-
-    button.classList.toggle('active', selected);
-    button.setAttribute('aria-pressed', String(selected));
+  document.querySelectorAll(
+    '#section-filters input[type="checkbox"]'
+  ).forEach(checkbox => {
+    checkbox.checked = selectedSections.has(checkbox.value);
   });
 
-  allSectionFilters
-    .querySelectorAll('input[type="checkbox"]')
-    .forEach(checkbox => {
-      checkbox.checked = selectedSections.has(checkbox.value);
-    });
+  document.querySelectorAll(
+    '#career-stage-filters input[type="checkbox"]'
+  ).forEach(checkbox => {
+    checkbox.checked = selectedCareerStages.has(checkbox.value);
+  });
+
+  document.querySelectorAll(
+    '#status-filters input[type="checkbox"]'
+  ).forEach(checkbox => {
+    checkbox.checked = selectedStatuses.has(checkbox.value);
+  });
 }
 
 
 /* ==========================================================
-   SECTION SELECTION
+   CLEAR FILTERS
    ========================================================== */
-
-function toggleSection(section) {
-  if (selectedSections.has(section)) {
-    selectedSections.delete(section);
-  } else {
-    selectedSections.add(section);
-  }
-
-  renderFilters();
-  renderProfiles();
-}
-
 
 function clearAllFilters() {
   selectedSections.clear();
+  selectedCareerStages.clear();
+  selectedStatuses.clear();
+
   searchInput.value = '';
 
   renderFilters();
@@ -313,7 +339,21 @@ function clearAllFilters() {
 
 
 /* ==========================================================
-   PROFILE SEARCH
+   EMAIL DISPLAY
+   Preserve periods; replace @ with [at]
+   ========================================================== */
+
+function formatEmail(email) {
+  if (!email) {
+    return '';
+  }
+
+  return String(email).replace(/\s*@\s*/g, ' [at] ');
+}
+
+
+/* ==========================================================
+   SEARCH MATCHING
    ========================================================== */
 
 function matchesSearch(profile, query) {
@@ -326,7 +366,9 @@ function matchesSearch(profile, query) {
     profile.email,
     profile.bio,
     profile.section1,
-    profile.section2
+    profile.section2,
+    getCareerStage(profile),
+    getProfileStatus(profile)
   ]
     .filter(Boolean)
     .join(' ')
@@ -335,6 +377,10 @@ function matchesSearch(profile, query) {
   return searchableText.includes(query.toLowerCase());
 }
 
+
+/* ==========================================================
+   SECTION FILTER MATCHING
+   ========================================================== */
 
 function matchesSections(profile) {
   if (selectedSections.size === 0) {
@@ -353,24 +399,36 @@ function matchesSections(profile) {
 
 
 /* ==========================================================
-   EMAIL DISPLAY
+   CAREER STAGE FILTER MATCHING
    ========================================================== */
 
-function formatEmail(email) {
-  if (!email) {
-    return '';
+function matchesCareerStage(profile) {
+  if (selectedCareerStages.size === 0) {
+    return true;
   }
 
-  return String(email)
-    .replace(/\s*\[at\]\s*/gi, '@')
-    .replace(/\s*@\s*/g, ' [at] ')
-    .replace(/\s*\[dot\]\s*/gi, '.')
-    .replace(/\s*\.\s*/g, ' dot ');
+  const careerStage = getCareerStage(profile);
+
+  return selectedCareerStages.has(careerStage);
+}
+
+
+/* ==========================================================
+   STATUS FILTER MATCHING
+   ========================================================== */
+
+function matchesStatus(profile) {
+  if (selectedStatuses.size === 0) {
+    return true;
+  }
+
+  return selectedStatuses.has(getProfileStatus(profile));
 }
 
 
 /* ==========================================================
    CREATE SECTION TAG
+   Full section name, including abbreviation
    ========================================================== */
 
 function makeTag(section) {
@@ -379,7 +437,7 @@ function makeTag(section) {
 
   const color = getSectionColor(section);
 
-  tag.textContent = getSectionAbbreviation(section);
+  tag.textContent = section;
   tag.title = section;
 
   tag.style.color = color;
@@ -387,27 +445,6 @@ function makeTag(section) {
   tag.style.backgroundColor = getTransparentColor(color);
 
   return tag;
-}
-
-
-/* ==========================================================
-   PROFILE STATUS
-   ========================================================== */
-
-function getProfileStatus(profile) {
-  const statusValue = String(
-    profile.status || ''
-  ).toLowerCase();
-
-  if (
-    statusValue === 'archived' ||
-    statusValue === 'inactive' ||
-    profile.archived === true
-  ) {
-    return 'Archived';
-  }
-
-  return 'Available';
 }
 
 
@@ -425,7 +462,7 @@ function makeProfileCard(profile) {
 
   card.style.borderLeftColor = firstSectionColor;
 
-  /* Name */
+  /* Full name */
 
   const name = document.createElement('h2');
   name.className = 'profile-name';
@@ -433,7 +470,7 @@ function makeProfileCard(profile) {
 
   card.appendChild(name);
 
-  /* Section tags */
+  /* Full APHA Section names */
 
   const tags = document.createElement('div');
   tags.className = 'profile-tags';
@@ -447,6 +484,18 @@ function makeProfileCard(profile) {
   }
 
   card.appendChild(tags);
+
+  /* Career stage */
+
+  const careerStage = getCareerStage(profile);
+
+  if (careerStage) {
+    const stage = document.createElement('p');
+    stage.className = 'career-stage';
+    stage.textContent = careerStage;
+
+    card.appendChild(stage);
+  }
 
   /* Email */
 
@@ -468,7 +517,7 @@ function makeProfileCard(profile) {
     card.appendChild(bio);
   }
 
-  /* Availability status */
+  /* Status */
 
   const statusText = getProfileStatus(profile);
 
@@ -487,7 +536,7 @@ function makeProfileCard(profile) {
 
 
 /* ==========================================================
-   RENDER PROFILES
+   RENDER PROFILES AND RESULTS COUNT
    ========================================================== */
 
 function renderProfiles() {
@@ -496,7 +545,9 @@ function renderProfiles() {
   const filteredProfiles = profiles.filter(profile => {
     return (
       matchesSearch(profile, query) &&
-      matchesSections(profile)
+      matchesSections(profile) &&
+      matchesCareerStage(profile) &&
+      matchesStatus(profile)
     );
   });
 
@@ -506,12 +557,17 @@ function renderProfiles() {
     memberGrid.appendChild(makeProfileCard(profile));
   });
 
-  const total = filteredProfiles.length;
+  const matchingCount = filteredProfiles.length;
+  const totalCount = profiles.length;
 
   resultCount.textContent =
-    `${total} ${total === 1 ? 'profile' : 'profiles'} found`;
+    `${matchingCount} ${
+      matchingCount === 1 ? 'profile' : 'profiles'
+    } found out of ${totalCount} ${
+      totalCount === 1 ? 'profile' : 'profiles'
+    }`;
 
-  emptyState.hidden = total !== 0;
+  emptyState.hidden = matchingCount !== 0;
 
   directoryStatus.hidden = true;
 }
@@ -548,15 +604,15 @@ async function loadProfiles() {
       return (
         profile &&
         profile.full_name &&
-        profile.email &&
-        profile.bio &&
         profile.section1 &&
         profile.section2
       );
     });
 
-    makeQuickFilters();
-    makeAllSectionFilters();
+    makeSectionFilters();
+    makeCareerStageFilters();
+    makeStatusFilters();
+
     renderFilters();
     renderProfiles();
 
@@ -590,26 +646,10 @@ clearSearchButton.addEventListener('click', () => {
   searchInput.focus();
 });
 
-clearFiltersButton.addEventListener('click', clearAllFilters);
-
-browseButton.addEventListener('click', () => {
-  const isExpanded = browseButton.getAttribute(
-    'aria-expanded'
-  ) === 'true';
-
-  const nextExpanded = !isExpanded;
-
-  browseButton.setAttribute(
-    'aria-expanded',
-    String(nextExpanded)
-  );
-
-  moreFilters.hidden = !nextExpanded;
-
-  browseButton.textContent = nextExpanded
-    ? 'Hide APHA Sections'
-    : 'Browse APHA Sections';
-});
+clearFiltersButton.addEventListener(
+  'click',
+  clearAllFilters
+);
 
 
 /* ==========================================================
