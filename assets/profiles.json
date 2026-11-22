@@ -10,7 +10,7 @@
   },
     {
     "full_name": "John Doe",
-    "email": "john_joe[at]gmail.com",
+    "email": "john_joe@gmail.com",
     "bio": "Clinician",
     "section1": "Maternal and Child Health (MCH)",
     "section2": "Sexual and Reproductive Health (SRH)",
@@ -19,7 +19,7 @@
   },
     {
     "full_name": "Jane Smith",
-    "email": "jane_smith[at]gmail.com",
+    "email": "jane_smith@gmail.com",
     "bio": "Policymaker for community-based research.",
     "section1": "Law (LAW)",
     "section2": "Community Health Workers (CHW)",
