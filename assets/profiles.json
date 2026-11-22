@@ -5,7 +5,7 @@
     "bio": "Epidemiologist with expertise in reproductive and environmental health.",
     "section1": "Epidemiology (EPI)",
     "section2": "Environment (ENV)",
-    "status": "Available"
+    "status": "Available",
   },
     {
     "full_name": "John Doe",
@@ -13,7 +13,7 @@
     "bio": "Clinician",
     "section1": "Sexual and Reproductive Health (SRH)",
     "section2": "Environment (ENV)",
-    "status": "Archived"
+    "status": "Archived",
   },
     {
     "full_name": "Jane Smith",
