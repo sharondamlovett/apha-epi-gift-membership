@@ -16,17 +16,16 @@
   <div class="page">
 
     <header class="topbar">
-
       <div class="brand">
         <img
           class="brand-logo"
           src="assets/apha-logo.svg"
-          alt="American Public Health Association Logo"
+          alt="American Public Health Association logo"
         >
       </div>
 
       <div class="intro">
-        <h1>Gift Membership Database</h1>
+        <h1>APHA Gift Membership Database</h1>
 
         <p>
           Searchable database of dedicated current APHA members seeking
@@ -46,7 +45,7 @@
 
       <div class="header-actions">
         <span class="admin-note">
-          Database is managed by Dr. Sharonda Lovett
+          Managed by Dr. Sharonda Lovett in collaboration with APHA Staff
         </span>
 
         <a
@@ -68,7 +67,6 @@
           Get Added to the Database
         </a>
       </div>
-
     </header>
 
     <main>
@@ -103,13 +101,12 @@
         </div>
 
         <div class="section-filter">
-
-          <div class="filter-label">SECTION</div>
+          <div class="filter-label">APHA SECTION</div>
 
           <div
             id="section-filters"
-            class="section-list"
-            aria-label="Popular APHA section filters"
+            class="section-list quick-section-list"
+            aria-label="Quick APHA section filters"
           ></div>
 
           <div class="filter-actions">
@@ -118,6 +115,7 @@
               class="browse-button"
               type="button"
               aria-expanded="false"
+              aria-controls="more-filters"
             >
               Browse APHA Sections
             </button>
@@ -130,22 +128,19 @@
               Clear filters
             </button>
           </div>
-
         </div>
 
         <div id="more-filters" class="more-filters" hidden>
-
           <p>
-            Select one or more APHA Sections to filter the database.
-            Selecting multiple sections shows profiles associated
-            with any selected section.
+            Browse all APHA Sections alphabetically. Select one or more
+            sections to show profiles associated with any selected section.
           </p>
 
           <div
             id="all-section-filters"
-            class="section-list all-section-filters"
+            class="all-section-filters"
+            aria-label="All APHA sections in alphabetical order"
           ></div>
-
         </div>
 
         <div class="directory-meta">
@@ -160,14 +155,10 @@
           Loading approved profiles…
         </div>
 
-        <div
-          id="member-grid"
-          class="profile-grid"
-        ></div>
+        <div id="member-grid" class="profile-grid"></div>
 
         <div id="empty-state" class="empty-state" hidden>
           <h2>No matching profiles</h2>
-
           <p>
             Try changing your search or section filters, or check
             back as members are added.
@@ -178,13 +169,8 @@
     </main>
 
     <footer>
-      <p class="footer-title">
-        APHA Gift Membership Database
-      </p>
-
-      <p class="footer-note">
-        Created in November 2026
-      </p>
+      <p class="footer-title">APHA Gift Membership Database</p>
+      <p class="footer-note">Created in November 2026</p>
     </footer>
 
   </div>
