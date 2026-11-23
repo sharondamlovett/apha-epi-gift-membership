@@ -6,7 +6,6 @@ Searchable database of current APHA members seeking financial support for a 1-ye
 
 ___
 
-** Notes**
 Updates? Commit changes and keep GitHub Pages to deploy from `main` and `/ (root)`.
 Upon review, profiles are added: `assets/profiles.json`. 
 All have consented to displayed information.
