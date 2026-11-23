@@ -1,6 +1,4 @@
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6fl1803edgMMcZjeH5neqg00xEWZRQyPvigKBbJdmw2dE1KodI6vXiUCIa3SifEls/exec';
-
 const CAREER_STAGES = [
   'Student',
   'Early Career Professional'
@@ -24,6 +22,7 @@ const SPECIAL_SECTION_COLORS = {
   'Maternal and Child Health (MCH)': '#d66b91'
 };
 
+// Page elements
 const memberGrid = document.getElementById('member-grid');
 const directoryStatus = document.getElementById('directory-status');
 const resultCount = document.getElementById('result-count');
@@ -344,11 +343,9 @@ function renderProfiles() {
 
 function handleProfilesResponse(data) {
   if (!Array.isArray(data)) {
-    if (data && data.error) {
-      throw new Error(data.message || 'Unable to retrieve profiles.');
-    }
-
-    throw new Error('The spreadsheet returned an unexpected response.');
+    throw new Error(
+      'The profiles.json file does not contain a valid profile list.'
+    );
   }
 
   profiles = data.filter(profile =>
@@ -370,63 +367,42 @@ function handleProfilesResponse(data) {
   }
 }
 
-function loadProfiles() {
+async function loadProfiles() {
   try {
-    if (
-      !APPS_SCRIPT_URL ||
-      APPS_SCRIPT_URL === 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE'
-    ) {
-      throw new Error('The Google Apps Script URL has not been added.');
-    }
-
     directoryStatus.hidden = false;
     directoryStatus.textContent =
-      'Connecting to the APHA profile database…';
+      'Loading approved profiles…';
 
     resultCount.textContent = 'Loading profiles…';
 
-    // JSONP allows the GitHub Pages website to retrieve
-    // approved public fields without exposing the spreadsheet.
-    window.handleProfilesResponse = function(data) {
-      try {
-        handleProfilesResponse(data);
-      } catch (error) {
-        console.error('Profile processing error:', error);
+    const response = await fetch('assets/profiles.json', {
+      cache: 'no-store'
+    });
 
-        directoryStatus.hidden = false;
-        directoryStatus.textContent =
-          'Unable to process profile information. Please contact the database administrator.';
+    if (!response.ok) {
+      throw new Error(
+        `Unable to load profiles.json (HTTP ${response.status}).`
+      );
+    }
 
-        resultCount.textContent = 'Profiles unavailable';
-      }
-    };
+    const data = await response.json();
 
-    const script = document.createElement('script');
-
-    script.src =
-      `${APPS_SCRIPT_URL}?callback=handleProfilesResponse&_=${Date.now()}`;
-
-    script.onerror = function() {
-      directoryStatus.hidden = false;
-
-      directoryStatus.textContent =
-        'Unable to connect to the profile database. Please refresh the page or try again later.';
-
-      resultCount.textContent = 'Profiles unavailable';
-    };
-
-    document.body.appendChild(script);
+    handleProfilesResponse(data);
 
   } catch (error) {
     console.error('Profile loading error:', error);
 
     directoryStatus.hidden = false;
-    directoryStatus.textContent = error.message;
+    directoryStatus.textContent =
+      'Unable to load approved profiles. Please refresh the page or contact the database administrator.';
 
     resultCount.textContent = 'Profiles unavailable';
+    memberGrid.innerHTML = '';
+    emptyState.hidden = true;
   }
 }
 
+// Search and filter event listeners
 searchInput.addEventListener('input', renderProfiles);
 
 clearSearchButton.addEventListener('click', () => {
@@ -438,4 +414,5 @@ clearSearchButton.addEventListener('click', () => {
 
 clearFiltersButton.addEventListener('click', clearAllFilters);
 
+// Load profiles from assets/profiles.json
 loadProfiles();
