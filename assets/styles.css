@@ -80,7 +80,7 @@ body {
 .admin-note {
   display: block;
   margin-bottom: 3px;
-  text-align: left;
+  text-align: center;
   font-size: 10pt;
   line-height: 1.5;
   color: #555555;
@@ -411,6 +411,7 @@ footer {
 
 .footer-title {
   margin: 0;
+  color: #777777;
   font-size: 10pt;
   font-weight: 400;
 }
@@ -418,7 +419,7 @@ footer {
 .footer-note {
   margin: 0;
   color: #777777;
-  font-size: 9pt;
+  font-size: 10pt;
   text-align: right;
 }
 
