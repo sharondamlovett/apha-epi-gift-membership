@@ -6,7 +6,7 @@ Searchable database of current APHA members seeking financial support for a 1-ye
 
 ## Notes
 Upon review, database profiles are manually added: `assets/profiles.json`. 
-All database profiles have consented to selected information being included. 
+All have consented to displayed information.
 Left accents automatically align with the color of the first tag. 
 
 Updates? Commit changes and keep GitHub Pages to deploy from `main` and `/ (root)`
