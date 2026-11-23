@@ -1,11 +1,19 @@
 # APHA Gift Membership Database
 
 Created and managed by Dr. Sharonda Lovett at sharonda.lovett.apha [at] gmail.com
- searchable static database hosted on GitHub Pages. The public database displays only profiles that the administrator manually adds to `assets/profiles.json` after reviewing the Google Form response and confirming consent.
 
-## Links
-- Submission form: https://forms.gle/DpoUy8tkKuhgpYQf6
-- APHA Gift Membership Program: https://www.apha.org/membership/gift-membership
+Searchable database of current APHA members seeking financial support for a 1-year APHA membership waiver. Prospective donors can review the profiles of prospective recipients, identify which recipient(s) they wish to gift to, and contact APHA staff directly at 1-877-396-APHA (2742) weekdays between 9am–5pm Eastern Time to coordinate payment. All donors and recipients will receive an email confirmation of the transaction recipient/processing of the APHA membership from APHA staff. Please do not attempt to exchange payment without APHA staff.
+
+Learn more about the APHA Gift Membership Program: https://www.apha.org/membership/gift-membership
+
+Upon review, database profiles are manually added: `assets/profiles.json`
+
+## Notes
+Upon review, database profiles are manually added: `assets/profiles.json`
+All database profiles have consented to selected information being included
+Left accents automatically align with the color of the first tag
+
+Updates? Commit changes and keep GitHub Pages to deploy from `main` and `/ (root)`
 
 ## Add or update a profile
 Edit `assets/profiles.json` and add one object per approved member. Each profile needs two APHA section labels and a status of `Available` or `Archived`.
